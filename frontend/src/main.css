@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@layer base {
+    input:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0px 1000px #111111 inset !important;
+        -webkit-text-fill-color: white !important;
+    }
+}
+
+html {
+    background-color: #111111;
+    color: white;
+}
+
+.swal2-popup {
+    backdrop-filter: blur(8px) !important;
+    border: 1px solid #e5e7eb !important;
+}
+
+.swal2-input {
+    color: #fff !important;
+}
+
+.swal2-confirm {
+    background-color: #44058b !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 0.5rem !important;
+}
+
+.swal2-confirm:hover {
+    background-color: #44058b !important;
+}
+
+.swal2-cancel {
+    background-color: #7e7f81 !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 0.5rem !important;
+}
+
+.swal2-cancel:hover {
+    background-color: #515252 !important;
+}
+
+.swal2-timer-progress-bar {
+    background-color: #7008e7 !important;
+}

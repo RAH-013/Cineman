@@ -184,3 +184,16 @@ if ($route === '' && $method === 'GET') {
     $controller->get($auth['id']);
     exit;
 }
+
+/*
+    GET USER AVATAR
+    GET /api/users/avatar
+*/
+if ($route === '/avatar' && $method === 'GET') {
+
+    AuthMiddleware::requireAuth();
+
+    $controller->getAvatar();
+
+    exit;
+}

@@ -18,6 +18,22 @@ if (str_starts_with($uri, $apiPrefix . '/users')) {
     exit;
 }
 
+/*
+    MOVIES
+*/
+if (str_starts_with($uri, $apiPrefix . '/movies')) {
+
+    $route = str_replace(
+        $apiPrefix . '/movies',
+        '',
+        $uri
+    );
+
+    require_once __DIR__ . '/Movie.php';
+
+    exit;
+}
+
 http_response_code(404);
 
 echo json_encode([

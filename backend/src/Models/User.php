@@ -76,9 +76,6 @@ class User
         string $id,
         string $email,
         string $password,
-        string $name,
-        string $lastname,
-        ?string $phone = null,
         string $role = 'user'
     ): bool {
 
@@ -117,30 +114,21 @@ class User
             ]);
 
             /*
-                CREATE PROFILE
+                CREATE EMPTY PROFILE
             */
             $profileSql = "
                 INSERT INTO user_profiles (
-                    user_id,
-                    name,
-                    lastname,
-                    phone
+                    user_id
                 )
                 VALUES (
-                    :user_id,
-                    :name,
-                    :lastname,
-                    :phone
+                    :user_id
                 )
             ";
 
             $profileStmt = $this->db->prepare($profileSql);
 
             $profileStmt->execute([
-                ':user_id' => $id,
-                ':name' => $name,
-                ':lastname' => $lastname,
-                ':phone' => $phone
+                ':user_id' => $id
             ]);
 
             $this->db->commit();
@@ -281,5 +269,112 @@ class User
         return $stmt->execute([
             ':id' => $id
         ]);
+    }
+
+    public function getAvatar(string $userId): void
+    {
+        $sql = "
+            SELECT
+                users.id,
+
+                user_profiles.name,
+                user_profiles.lastname
+
+            FROM users
+
+            LEFT JOIN user_profiles
+                ON user_profiles.user_id = users.id
+
+            WHERE users.id = :id
+
+            LIMIT 1
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':id' => $userId
+        ]);
+
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$user) {
+
+            http_response_code(404);
+
+            echo json_encode([
+                'success' => false,
+                'message' => 'Usuario no encontrado'
+            ]);
+
+            return;
+        }
+
+        /*
+            GENERATE SVG
+        */
+        $hash = array_sum(
+            array_map(
+                'ord',
+                str_split(
+                    $userId .
+                    $user['id'] .
+                    ($user['lastname'] ?? '')
+                )
+            )
+        );
+
+        $hue = $hash % 360;
+
+        $color1 = "hsl({$hue}, 70%, 40%)";
+
+        $color2 = "hsl(" . (($hue + 30) % 360) . ", 60%, 50%)";
+
+        if (!empty(trim($user['name'] ?? ''))) {
+
+            $initials =
+                strtoupper($user['name'][0]) .
+                strtoupper($user['lastname'][0] ?? '');
+
+        } elseif (!empty(trim($user['lastname'] ?? ''))) {
+
+            $initials = strtoupper(
+                $user['lastname'][0]
+            );
+
+        } else {
+
+            $initials = 'YO';
+        }
+
+        $svg = "
+            <svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'>
+                <defs>
+                    <linearGradient id='grad' x1='0%' y1='0%' x2='100%' y2='100%'>
+                        <stop offset='0%' stop-color='{$color1}' />
+                        <stop offset='100%' stop-color='{$color2}' />
+                    </linearGradient>
+                </defs>
+
+                <rect width='100' height='100' fill='url(#grad)' />
+
+                <text
+                    x='50'
+                    y='55'
+                    text-anchor='middle'
+                    dominant-baseline='middle'
+                    font-family='Sans-serif'
+                    font-size='40'
+                    font-weight='bold'
+                    fill='#fff'
+                >
+                    {$initials}
+                </text>
+            </svg>
+        ";
+
+        header('Content-Type: image/svg+xml');
+
+        echo $svg;
     }
 }

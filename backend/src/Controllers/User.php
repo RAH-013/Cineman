@@ -26,9 +26,7 @@ class User
         if (
             !isset(
                 $body['email'],
-                $body['password'],
-                $body['name'],
-                $body['lastname']
+                $body['password']
             )
         ) {
 
@@ -47,10 +45,7 @@ class User
         $created = $this->model->create(
             $id,
             $body['email'],
-            $body['password'],
-            $body['name'],
-            $body['lastname'],
-            $body['phone'] ?? null
+            $body['password']
         );
 
         if (!$created) {
@@ -225,5 +220,24 @@ class User
             'success' => true,
             'data' => $users
         ]);
+    }
+
+    public function getAvatar(): void
+    {
+        $id = $_GET['id'] ?? null;
+
+        if (!$id) {
+
+            http_response_code(400);
+
+            echo json_encode([
+                'success' => false,
+                'message' => 'Falta ID'
+            ]);
+
+            return;
+        }
+
+        $this->model->getAvatar($id);
     }
 }

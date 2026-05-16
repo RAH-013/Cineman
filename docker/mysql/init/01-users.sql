@@ -8,8 +8,8 @@ CREATE TABLE users (
 
 CREATE TABLE user_profiles (
     user_id CHAR(36) PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    lastname VARCHAR(255) NOT NULL,
+    name VARCHAR(255),
+    lastname VARCHAR(255),
     phone VARCHAR(20),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
