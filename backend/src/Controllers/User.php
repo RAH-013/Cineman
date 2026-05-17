@@ -175,17 +175,20 @@ class User
         ]);
     }
 
-    public function delete(string $id): void
+    public function delete(string $id, bool $isOwner): void
     {
         $this->model->delete($id);
 
-        setcookie('token', '', [
-            'expires' => time() - 3600,
-            'path' => '/',
-            'httponly' => true,
-            'secure' => false,
-            'samesite' => 'Lax'
-        ]);
+        if($isOwner)
+        {
+            setcookie('token', '', [
+                'expires' => time() - 3600,
+                'path' => '/',
+                'httponly' => true,
+                'secure' => false,
+                'samesite' => 'Lax'
+            ]);
+        }
 
         echo json_encode([
             'success' => true,

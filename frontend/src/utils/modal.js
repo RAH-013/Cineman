@@ -56,7 +56,7 @@ export const showToast = (icon, title) => {
         icon: icon,
         title: title,
         showConfirmButton: false,
-        timer: 3000,
+        timer: 1500,
         timerProgressBar: true,
         background: "rgba(10, 10, 15, 0.95)",
         color: "#fff",

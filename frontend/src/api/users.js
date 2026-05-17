@@ -2,7 +2,7 @@ import apiAxios from "./axios";
 
 export const apiGetUsers = async (options) => {
     try {
-        const response = await apiAxios.get('/users/all', {
+        const response = await apiAxios.get('/users', {
             params: options
         })
 
@@ -50,6 +50,18 @@ export const apiDelete = async () => {
     }
 }
 
+export const apiUserDelete = async (user_id) => {
+    try {
+        const response = await apiAxios.delete('/users', {
+            params: { user_id }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error al eliminar usuario:", error);
+        throw error;
+    }
+}
+
 export const apiGetUserProfile = async (id) => {
     try {
         const response = await apiAxios.get(`/users/profile/${id}`);
@@ -62,20 +74,10 @@ export const apiGetUserProfile = async (id) => {
 
 export const apiChangeUserRole = async (id, role) => {
     try {
-        const response = await apiAxios.put(`/users/profile/${id}/${role}`);
+        const response = await apiAxios.put('/users', { id, role });
         return response.data;
     } catch (error) {
         console.error("Error al cambiar rol del usuario:", error);
-        throw error.response?.data || error;
-    }
-};
-
-export const apiUserDelete = async (id) => {
-    try {
-        const response = await apiAxios.delete(`/users/${id}`);
-        return response.data;
-    } catch (error) {
-        console.error("Error al eliminar usuario:", error);
         throw error.response?.data || error;
     }
 };

@@ -109,7 +109,7 @@ if ($route === '' && $method === 'DELETE') {
         true
     );
 
-    $id = $body['id'] ?? $auth['id'];
+    $id = $_GET['user_id'] ?? $auth['id'];
 
     $isOwner = $auth['id'] === $id;
     $isAdmin = $auth['role'] === 'admin';
@@ -120,13 +120,13 @@ if ($route === '' && $method === 'DELETE') {
 
         echo json_encode([
             'success' => false,
-            'message' => 'Forbidden'
+            'message' => 'Protegido'
         ]);
 
         exit;
     }
 
-    $controller->delete($id);
+    $controller->delete($id, $isOwner);
     exit;
 }
 
@@ -149,7 +149,7 @@ if ($route === '/get' && $method === 'GET') {
 
         echo json_encode([
             'success' => false,
-            'message' => 'Forbidden'
+            'message' => 'Protegido'
         ]);
 
         exit;

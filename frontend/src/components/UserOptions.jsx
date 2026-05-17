@@ -248,7 +248,7 @@ function UserOptions({ collapsed }) {
                                             className={`
                                             group flex items-center justify-between rounded-2xl px-5 py-4 backdrop-blur-xl transition-all duration-300
 
-                                            ${pathname.startsWith("/admin")
+                                            ${pathname.startsWith("/users")
                                                     ? "bg-violet-600 text-white shadow-lg shadow-violet-600/20"
                                                     : "border border-white/5 bg-white/3 text-neutral-300 hover:border-violet-500/20 hover:bg-white/6 hover:text-white"
                                                 }
@@ -276,7 +276,7 @@ function UserOptions({ collapsed }) {
                                             className={`
                                             group flex items-center justify-between rounded-2xl px-5 py-4 backdrop-blur-xl transition-all duration-300
 
-                                            ${pathname.startsWith("/admin")
+                                            ${pathname.startsWith("/logs")
                                                     ? "bg-violet-600 text-white shadow-lg shadow-violet-600/20"
                                                     : "border border-white/5 bg-white/3 text-neutral-300 hover:border-violet-500/20 hover:bg-white/6 hover:text-white"
                                                 }

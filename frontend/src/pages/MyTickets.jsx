@@ -158,7 +158,7 @@ function MyTickets() {
 
                     <div className="flex items-center justify-between pt-3 border-t border-white/10">
                         <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">
-                            Comprado: {formatDateTime(ticket.purchased_at).time}
+                            Comprado: {formatDateTime(ticket.purchased_at).date} - {formatDateTime(ticket.purchased_at).time}
                         </span>
                         <span className="text-lg font-black text-white">
                             ${ticket.total_price}

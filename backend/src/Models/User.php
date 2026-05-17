@@ -17,9 +17,17 @@ class User
     public function get(string $excludeId): array
     {
         $sql = "
-            SELECT id, email, role
+            SELECT 
+                users.id, 
+                users.email, 
+                users.role,
+                user_profiles.name,
+                user_profiles.lastname,
+                user_profiles.phone
             FROM users
-            WHERE id != :id
+            LEFT JOIN user_profiles 
+                ON user_profiles.user_id = users.id
+            WHERE users.id != :id
         ";
 
         $stmt = $this->db->prepare($sql);
