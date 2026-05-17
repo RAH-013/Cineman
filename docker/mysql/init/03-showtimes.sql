@@ -3,21 +3,26 @@ CREATE TABLE showtimes (
 
     movie_id CHAR(36) NOT NULL,
 
-    room INT NOT NULL
-    CHECK (room BETWEEN 1 AND 10),
+    room ENUM(
+        '1',
+        '2',
+        '3',
+        '4',
+        '5'
+    ) NOT NULL,
 
     start_time DATETIME NOT NULL,
 
     language ENUM(
-        'Subtitulada',
-        'Doblada'
+        'SUB',
+        'ESP'
     ) NOT NULL,
 
     format ENUM(
-        'Tradicional',
+        '2D',
         '3D',
         'IMAX'
-    ) NOT NULL DEFAULT 'Tradicional',
+    ) NOT NULL DEFAULT '2D',
 
     price DECIMAL(10,2) NOT NULL
     CHECK (price >= 0),

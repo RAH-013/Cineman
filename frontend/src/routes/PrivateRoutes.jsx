@@ -12,12 +12,14 @@ export function PrivateRoute({ children }) {
     return children ?? <Outlet />;
 }
 
-export function RoleGuard({ role: requiredRole = "admin" }) {
+export function RoleGuard({ role, roles }) {
     const { user, loading } = useUser();
 
     if (loading) return <Loader />;
 
-    if (!user || user.role !== requiredRole) {
+    const allowedRoles = roles ?? [role ?? "admin"];
+
+    if (!user || !allowedRoles.includes(user.role)) {
         return <Navigate to="/" replace />;
     }
 

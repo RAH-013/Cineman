@@ -203,10 +203,10 @@ function UserOptions({ collapsed }) {
                                 />
                             </Link>
 
-                            {user.role ===
-                                "admin" && (
+                            {
+                                (user.role === "admin" || user.role === "manager") && (
                                     <Link
-                                        to="/admin"
+                                        to="/showtimes"
                                         onClick={() =>
                                             setMenuOpen(
                                                 false
@@ -215,14 +215,14 @@ function UserOptions({ collapsed }) {
                                         className={`
                                             group flex items-center justify-between rounded-2xl px-5 py-4 backdrop-blur-xl transition-all duration-300
 
-                                            ${pathname.startsWith("/admin")
+                                            ${pathname.startsWith("/showtimes")
                                                 ? "bg-violet-600 text-white shadow-lg shadow-violet-600/20"
                                                 : "border border-white/5 bg-white/3 text-neutral-300 hover:border-violet-500/20 hover:bg-white/6 hover:text-white"
                                             }
                                         `}
                                     >
                                         <span className="font-medium">
-                                            Admin
+                                            Funciones
                                         </span>
 
                                         <FontAwesomeIcon
@@ -232,7 +232,70 @@ function UserOptions({ collapsed }) {
                                             className="text-sm opacity-70 transition-all duration-300 group-hover:translate-x-1"
                                         />
                                     </Link>
-                                )}
+                                )
+                            }
+
+                            {user.role ===
+                                "admin" && (
+                                    <>
+                                        <Link
+                                            to="/users"
+                                            onClick={() =>
+                                                setMenuOpen(
+                                                    false
+                                                )
+                                            }
+                                            className={`
+                                            group flex items-center justify-between rounded-2xl px-5 py-4 backdrop-blur-xl transition-all duration-300
+
+                                            ${pathname.startsWith("/admin")
+                                                    ? "bg-violet-600 text-white shadow-lg shadow-violet-600/20"
+                                                    : "border border-white/5 bg-white/3 text-neutral-300 hover:border-violet-500/20 hover:bg-white/6 hover:text-white"
+                                                }
+                                        `}
+                                        >
+                                            <span className="font-medium">
+                                                Usuarios
+                                            </span>
+
+                                            <FontAwesomeIcon
+                                                icon={
+                                                    faArrowRightLong
+                                                }
+                                                className="text-sm opacity-70 transition-all duration-300 group-hover:translate-x-1"
+                                            />
+                                        </Link>
+
+                                        <Link
+                                            to="/logs"
+                                            onClick={() =>
+                                                setMenuOpen(
+                                                    false
+                                                )
+                                            }
+                                            className={`
+                                            group flex items-center justify-between rounded-2xl px-5 py-4 backdrop-blur-xl transition-all duration-300
+
+                                            ${pathname.startsWith("/admin")
+                                                    ? "bg-violet-600 text-white shadow-lg shadow-violet-600/20"
+                                                    : "border border-white/5 bg-white/3 text-neutral-300 hover:border-violet-500/20 hover:bg-white/6 hover:text-white"
+                                                }
+                                        `}
+                                        >
+                                            <span className="font-medium">
+                                                Logs
+                                            </span>
+
+                                            <FontAwesomeIcon
+                                                icon={
+                                                    faArrowRightLong
+                                                }
+                                                className="text-sm opacity-70 transition-all duration-300 group-hover:translate-x-1"
+                                            />
+                                        </Link>
+                                    </>
+                                )
+                            }
 
                             <button
                                 onClick={() => {

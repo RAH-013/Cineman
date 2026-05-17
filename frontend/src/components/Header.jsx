@@ -8,7 +8,8 @@ import {
     faChevronLeft,
     faChevronRight,
     faFilm,
-    faHouse
+    faHouse,
+    faTicket
 } from "@fortawesome/free-solid-svg-icons"
 
 import UserOptions from "./UserOptions"
@@ -30,6 +31,11 @@ function Header() {
             label: "Películas",
             path: "/movies",
             icon: faFilm
+        },
+        {
+            label: "Mis Boletos",
+            path: "/tickets/my",
+            icon: faTicket
         }
     ]
 
@@ -37,7 +43,7 @@ function Header() {
         <>
             <button
                 onClick={() => setCollapsed(!collapsed)}
-                className={`fixed top-5 z-35 flex items-center justify-center w-15 h-10 rounded-2xl bg-neutral-800/90 backdrop-blur-xl text-neutral-400 transition-[left,background-color,color,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-neutral-900 hover:text-white hover:scale-105 ${collapsed ? "left-22" : "left-59"
+                className={`cursor-pointer fixed top-5 z-35 flex items-center justify-center w-15 h-10 rounded-2xl bg-neutral-800/90 backdrop-blur-xl text-neutral-400 transition-[left,background-color,color,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-neutral-900 hover:text-white hover:scale-105 ${collapsed ? "left-22" : "left-57"
                     }`}
             >
                 <FontAwesomeIcon
@@ -77,9 +83,11 @@ function Header() {
                         </div>
                     </div>
 
-                    <nav className="mt-6 flex flex-col gap-2 px-4">
+                    <nav className="mt-6 flex flex-col gap-4 px-4">
                         {links.map(({ label, path, icon }) => {
-                            const active = pathname === path
+                            const active = path === "/"
+                                ? location.pathname === "/"
+                                : location.pathname.startsWith(path);
 
                             return (
                                 <Link

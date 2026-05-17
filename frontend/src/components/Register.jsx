@@ -1,9 +1,8 @@
 import { useState, useRef, useEffect } from "react"
 import { apiCreate } from "../api/auth"
-import { SwalCustom } from "../utils/modal"
+import { SwalCustom, showToast } from "../utils/modal"
 
 import InputField from "../layouts/InputField"
-import Swal from "sweetalert2"
 
 function Register({ callback }) {
     const [email, setEmail] = useState("")
@@ -31,15 +30,7 @@ function Register({ callback }) {
         })
 
         if (!success) {
-            Swal.fire({
-                toast: true,
-                position: "top-end",
-                icon: "error",
-                title: error?.message || "Registro Fallido",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true
-            })
+            showToast("error", error?.message || "Registro Fallido")
             return
         }
 

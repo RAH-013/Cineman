@@ -326,7 +326,10 @@ function Home() {
                             </p>
 
                             <div>
-                                <button className="bg-[#8B5CF6] hover:bg-violet-700 cursor-pointer text-white px-8 py-3 rounded-full font-bold flex items-center space-x-2 transition-colors duration-300">
+                                <button
+                                    onClick={() => navigate(`/movies/${featuredMovie.id}`)}
+                                    className="bg-[#8B5CF6] hover:bg-violet-700 cursor-pointer text-white px-8 py-3 rounded-full font-bold flex items-center space-x-2 transition-colors duration-300"
+                                >
                                     <FontAwesomeIcon icon={faTicketSimple} className="w-5 h-5" />
                                     <span>Comprar Boletos</span>
                                 </button>

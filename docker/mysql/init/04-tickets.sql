@@ -18,11 +18,12 @@ CREATE TABLE tickets (
 
     total_price DECIMAL(10,2) NOT NULL,
 
-    payment_status ENUM(
-        'pendiente',
-        'pagado',
-        'cancelado'
-    ) NOT NULL DEFAULT 'pendiente',
+    status ENUM(
+        'reserved',
+        'paid'
+    ) NOT NULL DEFAULT 'reserved',
+
+    expires_at DATETIME NOT NULL,
 
     purchased_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
@@ -45,5 +46,9 @@ CREATE TABLE tickets (
 
     INDEX idx_tickets_user (user_id),
 
-    INDEX idx_tickets_showtime (showtime_id)
+    INDEX idx_tickets_showtime (showtime_id),
+
+    INDEX idx_tickets_status (status),
+
+    INDEX idx_tickets_expires (expires_at)
 );

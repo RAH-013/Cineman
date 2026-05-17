@@ -4,6 +4,7 @@ export const SwalCustom = ({
     icon = "success",
     message = "Mensaje por defecto",
     autoclose = false,
+    confirmButtonText = "Aceptar",
     onConfirmAction = null,
     callback = null,
     input = false,
@@ -39,7 +40,7 @@ export const SwalCustom = ({
         reverseButtons: true,
         showConfirmButton: !autoclose,
         showCancelButton: input || !autoclose,
-        confirmButtonText: "Aceptar",
+        confirmButtonText: confirmButtonText,
         cancelButtonText: "Cancelar",
         background: "rgba(0, 0, 0, 0.8)",
     }).then((result) => {
@@ -47,3 +48,20 @@ export const SwalCustom = ({
         if (callback) callback(result);
     });
 };
+
+export const showToast = (icon, title) => {
+    Swal.fire({
+        toast: true,
+        position: "bottom-right",
+        icon: icon,
+        title: title,
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: "rgba(10, 10, 15, 0.95)",
+        color: "#fff",
+        customClass: {
+            popup: 'border border-white/10 backdrop-blur-md'
+        }
+    })
+}

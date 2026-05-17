@@ -2,11 +2,9 @@ import { useContext, useState, useRef, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { apiAuth } from "../api/auth"
 import { UserContext } from "../context/User"
-import { SwalCustom } from "../utils/modal"
+import { SwalCustom, showToast } from "../utils/modal"
 
 import InputField from "../layouts/InputField"
-import Swal from "sweetalert2"
-
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -28,15 +26,7 @@ function Login() {
         })
 
         if (!success) {
-            Swal.fire({
-                toast: true,
-                position: "top-end",
-                icon: "error",
-                title: error?.message || "Autenticación Fallida",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true
-            })
+            showToast("error", error?.message || "Autenticación Fallida")
             return
         }
 

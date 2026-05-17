@@ -8,3 +8,16 @@ export const apiGetMovies = async () => {
         console.error("Error al obtener usuarios:", error);
     }
 }
+
+export const apiGetMovie = async (id) => {
+    try {
+        const { data } = await apiAxios.get('/movies/', {
+            params: { id }
+        })
+
+        return data
+    } catch (error) {
+        console.error("Error al obtener la película:", error)
+        throw error
+    }
+}

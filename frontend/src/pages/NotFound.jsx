@@ -1,7 +1,8 @@
-import Loader from "../layouts/Loader"
+import React from 'react'
+
 function NotFound() {
     return (
-        <Loader />
+        <div>NotFound</div>
     )
 }
 

@@ -50,16 +50,7 @@ class Movie
     {
         $sql = "
             SELECT
-                id,
-                title,
-                synopsis,
-                poster_url,
-                duration_minutes,
-                classification,
-                genres,
-                release_date,
-                is_active,
-                created_at
+            *
             FROM movies
             WHERE id = :id
             LIMIT 1

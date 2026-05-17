@@ -1,13 +1,13 @@
 <?php
 
-use Backend\Controllers\Movie;
+use Backend\Controllers\Showtime;
 use Backend\Middleware\Auth as AuthMiddleware;
 
-$controller = new Movie();
+$controller = new Showtime();
 
 /*
-    CREATE MOVIE
-    POST /api/movies
+    CREATE SHOWTIME
+    POST /api/showtimes
 */
 if ($route === '' && $method === 'POST') {
 
@@ -21,8 +21,8 @@ if ($route === '' && $method === 'POST') {
 }
 
 /*
-    UPDATE MOVIE
-    PUT /api/movies
+    UPDATE SHOWTIME
+    PUT /api/showtimes
 */
 if ($route === '' && $method === 'PUT') {
 
@@ -31,10 +31,7 @@ if ($route === '' && $method === 'PUT') {
         'manager'
     ]);
 
-    $body = json_decode(
-        file_get_contents('php://input'),
-        true
-    );
+    $body = json_decode(file_get_contents('php://input'), true);
 
     if (!isset($body['id'])) {
 
@@ -49,20 +46,15 @@ if ($route === '' && $method === 'PUT') {
     }
 
     $id = $body['id'];
-
     unset($body['id']);
 
-    $controller->update(
-        $id,
-        $body
-    );
-
+    $controller->update($id, $body);
     exit;
 }
 
 /*
-    DELETE MOVIE
-    DELETE /api/movies/?id=UUID
+    DELETE SHOWTIME
+    DELETE /api/showtimes/?id=UUID
 */
 if ($route === '/' && $method === 'DELETE') {
 
@@ -90,58 +82,62 @@ if ($route === '/' && $method === 'DELETE') {
 }
 
 /*
-    GET MOVIE BY ID
-    GET /api/movies/?id=
+    GET SHOWTIME BY ID
+    GET /api/showtimes/?id=
 */
 if ($route === '/' && $method === 'GET') {
-    $controller->findById();
+    $id = $_GET['id'] ?? null;
+
+    if (!$id) {
+
+        http_response_code(400);
+
+        echo json_encode([
+            'success' => false,
+            'message' => 'Falta ID'
+        ]);
+
+        exit;
+    }
+
+    $controller->findById($id);
     exit;
 }
 
 /*
-    GET MOVIE BY TITLE
-    GET /api/movies/?title=
+    GET SHOWTIMES BY MOVIE
+    GET /api/showtimes/?movie_id=
 */
-if ($route === '/search' && $method === 'GET') {
+if ($route === '/movie/' && $method === 'GET') {
+    $id = $_GET['movie_id'] ?? null;
 
-    $controller->findByTitle();
+    if (!$id) {
+
+        http_response_code(400);
+
+        echo json_encode([
+            'success' => false,
+            'message' => 'Falta movie_id'
+        ]);
+
+        exit;
+    }
+
+    $controller->findByMovieId($id);
     exit;
 }
 
 /*
-    GET ALL MOVIES
-    GET /api/movies
+    GET ALL SHOWTIMES
+    GET /api/showtimes
 */
-if ($route === '' && $method === 'GET') {
+if ($route === '/all' && $method === 'GET') {
+
     AuthMiddleware::requireRole([
         'admin',
         'manager'
     ]);
 
     $controller->get();
-    exit;
-}
-
-/*
-    GET INACTIVE MOVIES
-    GET /api/movies/inactive
-*/
-if ($route === '/inactive' && $method === 'GET') {
-    AuthMiddleware::requireRole([
-        'admin',
-        'manager'
-    ]);
-
-    $controller->getInactive();
-    exit;
-}
-
-/*
-    GET ACTIVE MOVIES
-    GET /api/movies/active
-*/
-if ($route === '/active' && $method === 'GET') {
-
-    $controller->getActive();
     exit;
 }

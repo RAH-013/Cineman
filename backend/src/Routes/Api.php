@@ -34,6 +34,39 @@ if (str_starts_with($uri, $apiPrefix . '/movies')) {
     exit;
 }
 
+
+/*
+    Showtimes
+*/
+if (str_starts_with($uri, $apiPrefix . '/showtimes')) {
+
+    $route = str_replace(
+        $apiPrefix . '/showtimes',
+        '',
+        $uri
+    );
+
+    require_once __DIR__ . '/Showtime.php';
+
+    exit;
+}
+
+/*
+    Tickets
+*/
+if (str_starts_with($uri, $apiPrefix . '/tickets')) {
+
+    $route = str_replace(
+        $apiPrefix . '/tickets',
+        '',
+        $uri
+    );
+
+    require_once __DIR__ . '/Ticket.php';
+
+    exit;
+}
+
 http_response_code(404);
 
 echo json_encode([

@@ -12,7 +12,8 @@ function InputField({
     alert = false,
     autoComplete = false,
     disabled = false,
-    width = "w-full"
+    width = "w-full",
+    ...rest
 }) {
     const [showPassword, setShowPassword] = useState(false)
 
@@ -23,8 +24,9 @@ function InputField({
     const isNumber = type === "number"
     const isFile = type === "file"
 
-    const hasPlaceholder = !!placeholder
-    const showLabel = !!label && !hasPlaceholder
+    const isDateType = ["date", "time", "datetime-local", "month", "week"].includes(type)
+
+    const showLabel = !!label
 
     let inputType = type
     if (isPassword) inputType = showPassword ? "text" : "password"
@@ -88,11 +90,14 @@ function InputField({
         }
     }
 
+    const finalPlaceholder = placeholder || " "
+
     return (
         <div className="relative">
             {isFile ? (
                 <>
                     <input
+                        {...rest}
                         id={`file-input-${name}`}
                         name={name}
                         type="file"
@@ -119,15 +124,16 @@ function InputField({
                 </>
             ) : isTA ? (
                 <textarea
+                    {...rest}
                     name={name}
                     value={value ?? ""}
                     onChange={handleChange}
                     disabled={disabled}
-                    placeholder={placeholder || ""}
+                    placeholder={finalPlaceholder}
                     autoComplete={autoComplete ? name : "off"}
                     rows={4}
-                    className={`peer w-full px-3 ${hasPlaceholder ? "py-3" : "pt-6 pb-2"} bg-transparent border rounded-lg
-                    text-white ${hasPlaceholder ? "placeholder-neutral-500" : "placeholder-transparent"} resize-none
+                    className={`peer w-full px-3 ${showLabel ? "pt-6 pb-2" : "py-3"} bg-transparent border rounded-lg
+                    text-white ${placeholder ? "placeholder-neutral-500" : "placeholder-transparent"} resize-none
                     selection:bg-violet-500/70 selection:text-white
                     focus:outline-none transition disabled:opacity-50
                     ${alert ? "border-yellow-400" : "border-neutral-600"}
@@ -135,18 +141,20 @@ function InputField({
                 />
             ) : (
                 <input
+                    {...rest}
                     name={name}
                     type={inputType}
-                    {...(isNumber && { min: 0 })}
+                    {...(isNumber && rest.min === undefined ? { min: 0 } : {})}
                     value={value ?? ""}
                     onChange={handleChange}
                     disabled={disabled}
-                    placeholder={placeholder || ""}
+                    placeholder={finalPlaceholder}
                     autoComplete={autoComplete ? name : "new-password"}
                     className={`peer ${width} bg-transparent border rounded-lg text-white
                     selection:bg-violet-500/70 selection:text-white
                     focus:outline-none transition disabled:opacity-50
-                    ${hasPlaceholder ? "px-4 py-2 placeholder-neutral-500" : "px-3 pr-10 pt-6 pb-2 placeholder-transparent"}
+                    ${showLabel ? "px-3 pr-10 pt-6 pb-2" : "px-4 py-2.5"} 
+                    ${placeholder ? "placeholder-neutral-500 focus:placeholder-neutral-400" : "placeholder-transparent"}
                     ${alert ? "border-yellow-400" : "border-neutral-600"}
                     ${alertStyles}
 
@@ -162,7 +170,7 @@ function InputField({
             {showLabel && (
                 <label
                     className={`pointer-events-none absolute left-3 transition-all
-                    ${isFile
+                    ${isFile || isDateType
                             ? "top-1 text-xs"
                             : "top-1 text-xs peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:top-1 peer-focus:text-xs"
                         }

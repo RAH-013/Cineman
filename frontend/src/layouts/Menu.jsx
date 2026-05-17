@@ -18,20 +18,8 @@ function Menu({
     if (!open) return null
 
     return (
-        <div className="
-            fixed inset-0
-        ">
-            <div
-                onClick={onClose}
-                className="
-                    w-screen
-                    z-50
-                    absolute inset-0
-                    bg-black/50
-                    animate-in fade-in
-                    duration-300
-                "
-            />
+        <div className="fixed inset-0">
+            <div onClick={onClose} className="w-screen z-50 absolute inset-0 bg-black/50 animate-in fade-in duration-300" />
 
             <div
                 className={`
