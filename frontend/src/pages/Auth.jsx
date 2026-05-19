@@ -27,7 +27,7 @@ function Auth() {
                 </span>
             </Link>
 
-            <section className="hidden lg:flex flex-1 relative items-center justify-center overflow-hidden border-r border-white/10 bg-linear-to-br from-violet-950 via-black to-black">
+            <section className="bg-[url('/patterns/carbon-fibre.png')] hidden lg:flex flex-1 relative items-center justify-center overflow-hidden border-r border-white/10 bg-linear-to-br from-violet-950 via-black to-black">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(139,92,246,0.25),transparent_60%)]" />
 
                 <div className="relative z-10 flex flex-col items-center gap-6 text-center px-10">

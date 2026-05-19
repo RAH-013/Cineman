@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlus, faPen, faTrash, faFilter, faLocationDot } from "@fortawesome/free-solid-svg-icons"
 import { apiGetShowtimes, apiDeleteShowtime } from "../../api/showtimes"
-import { apiGetMovies } from "../../api/movies"
+import { apiGetActiveMovies } from "../../api/movies"
 import { SwalCustom, showToast } from "../../utils/modal"
 
 import ShowtimesForm from "../../components/ShowtimesForm"
@@ -25,7 +25,7 @@ export default function Showtimes() {
         try {
             setLoading(true)
             const stRes = await apiGetShowtimes()
-            const mvRes = await apiGetMovies()
+            const mvRes = await apiGetActiveMovies()
 
             if (stRes?.success) setShowtimes(stRes.data)
             if (mvRes?.success) setMovies(mvRes.data)
@@ -45,7 +45,7 @@ export default function Showtimes() {
 
     const handleClosePanel = () => {
         setIsPanelOpen(false)
-        setTimeout(() => setSelectedShowtime(null), 300) // Limpiar después de la animación de cierre
+        setTimeout(() => setSelectedShowtime(null), 300)
     }
 
     const handleDelete = (id) => {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { apiGetMovies } from '../api/movies';
+import { formatGenres, getYear } from '../utils/movie';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faMagnifyingGlass,
@@ -11,17 +12,6 @@ import {
 
 import Images from '../layouts/Images';
 import Loader from '../layouts/Loader';
-
-const formatGenres = (genresString) => {
-    if (!genresString) return '';
-    const firstGenre = genresString.split(',')[0].trim();
-    return firstGenre.charAt(0).toUpperCase() + firstGenre.slice(1);
-};
-
-const getYear = (dateString) => {
-    if (!dateString) return '';
-    return new Date(dateString).getFullYear();
-};
 
 function Movies() {
     const [movies, setMovies] = useState([]);

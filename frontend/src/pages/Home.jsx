@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { apiGetMovies } from '../api/movies';
+import { apiGetActiveMovies } from '../api/movies';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faVolumeXmark,
@@ -80,7 +80,7 @@ function Home() {
     useEffect(() => {
         const fetchMovies = async () => {
             try {
-                const response = await apiGetMovies();
+                const response = await apiGetActiveMovies();
                 if (response && response.success && response.data && response.data.length > 0) {
                     setMovies(response.data);
                     moviesRef.current = response.data;

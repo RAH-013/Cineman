@@ -18,7 +18,11 @@ CREATE TABLE movies (
         'horror',
         'romance',
         'sci_fi',
-        'thriller'
+        'thriller',
+        'misterio',
+        'videojuego',
+        'terror',
+        'noir'
     ) NOT NULL,
 
     duration_minutes INT NOT NULL,

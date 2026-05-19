@@ -204,92 +204,86 @@ function UserOptions({ collapsed }) {
                             </Link>
 
                             {
-                                (user.role === "admin" || user.role === "manager") && (
-                                    <Link
-                                        to="/showtimes"
-                                        onClick={() =>
-                                            setMenuOpen(
-                                                false
-                                            )
-                                        }
-                                        className={`
-                                            group flex items-center justify-between rounded-2xl px-5 py-4 backdrop-blur-xl transition-all duration-300
-
-                                            ${pathname.startsWith("/showtimes")
-                                                ? "bg-violet-600 text-white shadow-lg shadow-violet-600/20"
-                                                : "border border-white/5 bg-white/3 text-neutral-300 hover:border-violet-500/20 hover:bg-white/6 hover:text-white"
-                                            }
-                                        `}
-                                    >
-                                        <span className="font-medium">
-                                            Funciones
-                                        </span>
-
-                                        <FontAwesomeIcon
-                                            icon={
-                                                faArrowRightLong
-                                            }
-                                            className="text-sm opacity-70 transition-all duration-300 group-hover:translate-x-1"
-                                        />
-                                    </Link>
-                                )
-                            }
-
-                            {user.role ===
-                                "admin" && (
+                                user.role === "manager" && (
                                     <>
                                         <Link
-                                            to="/users"
-                                            onClick={() =>
-                                                setMenuOpen(
-                                                    false
-                                                )
-                                            }
+                                            to="/manager/movies"
+                                            onClick={() => setMenuOpen(false)}
                                             className={`
-                                            group flex items-center justify-between rounded-2xl px-5 py-4 backdrop-blur-xl transition-all duration-300
-
-                                            ${pathname.startsWith("/users")
+                                                group flex items-center justify-between rounded-2xl px-5 py-4 backdrop-blur-xl transition-all duration-300
+                                                ${pathname.startsWith("/manager/movies")
                                                     ? "bg-violet-600 text-white shadow-lg shadow-violet-600/20"
                                                     : "border border-white/5 bg-white/3 text-neutral-300 hover:border-violet-500/20 hover:bg-white/6 hover:text-white"
                                                 }
-                                        `}
+                                            `}
                                         >
-                                            <span className="font-medium">
-                                                Usuarios
-                                            </span>
+                                            <span className="font-medium">Peliculas</span>
 
                                             <FontAwesomeIcon
-                                                icon={
-                                                    faArrowRightLong
-                                                }
+                                                icon={faArrowRightLong}
                                                 className="text-sm opacity-70 transition-all duration-300 group-hover:translate-x-1"
                                             />
                                         </Link>
 
                                         <Link
-                                            to="/logs"
-                                            onClick={() =>
-                                                setMenuOpen(
-                                                    false
-                                                )
-                                            }
+                                            to="/manager/showtimes"
+                                            onClick={() => setMenuOpen(false)}
                                             className={`
-                                            group flex items-center justify-between rounded-2xl px-5 py-4 backdrop-blur-xl transition-all duration-300
-
-                                            ${pathname.startsWith("/logs")
+                                                group flex items-center justify-between rounded-2xl px-5 py-4 backdrop-blur-xl transition-all duration-300
+                                                ${pathname.startsWith("/manager/showtimes")
                                                     ? "bg-violet-600 text-white shadow-lg shadow-violet-600/20"
                                                     : "border border-white/5 bg-white/3 text-neutral-300 hover:border-violet-500/20 hover:bg-white/6 hover:text-white"
                                                 }
-                                        `}
+                                            `}
                                         >
-                                            <span className="font-medium">
-                                                Logs
-                                            </span>
+                                            <span className="font-medium">Funciones</span>
 
                                             <FontAwesomeIcon
-                                                icon={
-                                                    faArrowRightLong
+                                                icon={faArrowRightLong}
+                                                className="text-sm opacity-70 transition-all duration-300 group-hover:translate-x-1"
+                                            />
+                                        </Link>
+                                    </>
+                                )
+                            }
+
+                            {
+                                user.role === "admin" && (
+                                    <>
+                                        <Link
+                                            to="/admin/users"
+                                            onClick={() => setMenuOpen(false)}
+                                            className={`
+                                                group flex items-center justify-between rounded-2xl px-5 py-4 backdrop-blur-xl transition-all duration-300
+                                                ${pathname.startsWith("/admin/users")
+                                                    ? "bg-violet-600 text-white shadow-lg shadow-violet-600/20"
+                                                    : "border border-white/5 bg-white/3 text-neutral-300 hover:border-violet-500/20 hover:bg-white/6 hover:text-white"
                                                 }
+                                            `}
+                                        >
+                                            <span className="font-medium">Usuarios</span>
+
+                                            <FontAwesomeIcon
+                                                icon={faArrowRightLong}
+                                                className="text-sm opacity-70 transition-all duration-300 group-hover:translate-x-1"
+                                            />
+                                        </Link>
+
+                                        <Link
+                                            to="/admin/system"
+                                            onClick={() => setMenuOpen(false)}
+                                            className={`
+                                                group flex items-center justify-between rounded-2xl px-5 py-4 backdrop-blur-xl transition-all duration-300
+                                                ${pathname.startsWith("/admin/system")
+                                                    ? "bg-violet-600 text-white shadow-lg shadow-violet-600/20"
+                                                    : "border border-white/5 bg-white/3 text-neutral-300 hover:border-violet-500/20 hover:bg-white/6 hover:text-white"
+                                                }
+                                            `}
+                                        >
+                                            <span className="font-medium">Sistema</span>
+
+                                            <FontAwesomeIcon
+                                                icon={faArrowRightLong}
                                                 className="text-sm opacity-70 transition-all duration-300 group-hover:translate-x-1"
                                             />
                                         </Link>

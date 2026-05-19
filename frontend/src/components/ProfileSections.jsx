@@ -160,7 +160,7 @@ function ProfileSections({
                                 <div className="relative w-full shrink-0">
                                     <div className="h-40 w-full relative overflow-hidden">
                                         <div className="absolute inset-0 bg-[linear-gradient(135deg,#0f172a,#312e81,#6d28d9,#a855f7)] opacity-90"></div>
-                                        <div className="absolute inset-0 opacity-20 bg-[url('/carbon-fibre.png')] mix-blend-overlay"></div>
+                                        <div className="absolute inset-0 opacity-20 bg-[url('/patterns/carbon-fibre.png')] mix-blend-overlay"></div>
                                         <div className="absolute bottom-0 left-0 w-full h-24 bg-linear-to-t from-neutral-950 to-transparent"></div>
                                     </div>
 

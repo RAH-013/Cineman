@@ -35,7 +35,7 @@ export const SwalCustom = ({
             }
         },
 
-        timer: autoclose ? 3000 : undefined,
+        timer: autoclose ? 1500 : undefined,
         timerProgressBar: autoclose,
         reverseButtons: true,
         showConfirmButton: !autoclose,

@@ -18,16 +18,7 @@ class Movie
     {
         $sql = "
             SELECT
-                id,
-                title,
-                director,
-                poster_url,
-                trailer_url,
-                classification,
-                genres,
-                release_date,
-                created_at,
-                is_active
+            *
             FROM movies
         ";
 

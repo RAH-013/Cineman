@@ -17,11 +17,12 @@ const Tickets = lazy(() => import("../pages/Tickets"));
 const MyTickets = lazy(() => import("../pages/MyTickets"));
 
 // Manager
+const ManagerMovies = lazy(() => import("../pages/manager/Movies"));
 const ManagerShowtimes = lazy(() => import("../pages/manager/Showtimes"));
 
 // Admin
 const AdminUsers = lazy(() => import("../pages/admin/Users"));
-const AdminLogs = lazy(() => import("../pages/admin/Logs"));
+const AdminSystem = lazy(() => import("../pages/admin/System"));
 
 export default function AppRouter() {
     return (
@@ -47,16 +48,17 @@ export default function AppRouter() {
                         </Route>
                     </Route>
 
-                    <Route element={<RoleGuard roles={["admin", "manager"]} />}>
+                    <Route element={<RoleGuard role="manager" />}>
                         <Route element={<Main />}>
-                            <Route path="/showtimes" element={<ManagerShowtimes />} />
+                            <Route path="/manager/showtimes" element={<ManagerShowtimes />} />
+                            <Route path="/manager/movies" element={<ManagerMovies />} />
                         </Route>
                     </Route>
 
                     <Route element={<RoleGuard role="admin" />}>
                         <Route element={<Main />}>
-                            <Route path="/users" element={<AdminUsers />} />
-                            <Route path="/logs" element={<AdminLogs />} />
+                            <Route path="/admin/users" element={<AdminUsers />} />
+                            <Route path="/admin/system" element={<AdminSystem />} />
                         </Route>
                     </Route>
 
