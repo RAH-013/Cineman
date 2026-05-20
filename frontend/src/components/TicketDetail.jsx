@@ -11,7 +11,7 @@ export default function TicketDetail({ ticket, onClose }) {
 
     return (
         <div className="fixed inset-0 z-50 bg-[#0a0a0f] flex flex-col w-screen h-screen overflow-hidden selection:bg-[#8B5CF6] selection:text-white animate-in fade-in duration-500">
-            <div className="w-full p-6 md:p-8 shrink-0 flex items-start z-20">
+            <div className="w-full p-6 md:p-8 shrink-0 flex items-center justify-between z-20">
                 <button
                     onClick={onClose}
                     className="group flex items-center gap-3 text-white/80 hover:text-white transition-all uppercase tracking-widest text-xs font-black backdrop-blur-md bg-white/5 px-5 py-3 rounded-full border border-white/10 hover:border-[#8B5CF6]/50 hover:bg-[#8B5CF6]/10"
@@ -19,6 +19,8 @@ export default function TicketDetail({ ticket, onClose }) {
                     <FontAwesomeIcon icon={faArrowLeft} className="group-hover:-translate-x-1 transition-transform" />
                     Volver a mis boletos
                 </button>
+
+                <Images src="/Logo.png" alt='Logotipo' width='100px' className='opacity-30' />
             </div>
 
             <div className="flex-1 w-full max-w-7xl mx-auto px-6 md:px-16 pb-12 flex items-center justify-center relative z-10 min-h-0">
@@ -27,9 +29,14 @@ export default function TicketDetail({ ticket, onClose }) {
 
                     <div className="flex-1 flex flex-col justify-between p-8 md:p-10 z-10 relative">
                         <div>
-                            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight text-white mb-8">
-                                {ticket.title}
-                            </h2>
+                            <div className="mb-8 flex flex-col gap-1">
+                                <span className="text-[10px] md:text-xs text-[#8B5CF6] font-black uppercase tracking-[0.3em]">
+                                    Cineman Presenta
+                                </span>
+                                <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight text-white leading-none">
+                                    {ticket.title}
+                                </h2>
+                            </div>
 
                             <div className="grid grid-cols-2 gap-y-6 gap-x-4 mb-6 text-left">
                                 <div className="flex flex-col">
@@ -64,7 +71,8 @@ export default function TicketDetail({ ticket, onClose }) {
                                     ${ticket.total_price}
                                 </p>
                             </div>
-                            <div className="text-left sm:text-right">
+                            <div className="flex flex-col items-start sm:items-end gap-2 text-left sm:text-right">
+                                <Images src="/Logo.png" alt='Logotipo' width='30px' className='opacity-30' />
                                 <p className="text-[10px] font-mono tracking-widest text-gray-600 uppercase">
                                     REF: {ticket.id}
                                 </p>
@@ -84,7 +92,6 @@ export default function TicketDetail({ ticket, onClose }) {
                     <div className="w-full md:w-[35%] shrink-0 p-4 md:p-6 flex items-center justify-center z-10">
                         <div className="w-full aspect-2/3 md:h-full relative rounded-2xl overflow-hidden shadow-[0_0_30px_rgba(0,0,0,0.5)] border border-white/5">
                             <Images src={ticket.poster_url} alt={ticket.title} className="w-full h-full object-cover" />
-                            {/* Sombra interna para fusionar la imagen con el estilo oscuro */}
                             <div className="absolute inset-0 bg-linear-to-t from-[#12121a]/80 via-transparent to-transparent"></div>
                         </div>
                     </div>

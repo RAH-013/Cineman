@@ -34,7 +34,6 @@ if (str_starts_with($uri, $apiPrefix . '/movies')) {
     exit;
 }
 
-
 /*
     Showtimes
 */
@@ -63,6 +62,22 @@ if (str_starts_with($uri, $apiPrefix . '/tickets')) {
     );
 
     require_once __DIR__ . '/Ticket.php';
+
+    exit;
+}
+
+/*
+    Sistema
+*/
+if (str_starts_with($uri, $apiPrefix . '/system')) {
+
+    $route = str_replace(
+        $apiPrefix . '/system',
+        '',
+        $uri
+    );
+
+    require_once __DIR__ . '/System.php';
 
     exit;
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { apiGetMovies } from '../api/movies';
+import { apiGetActiveMovies } from '../api/movies';
 import { formatGenres, getYear } from '../utils/movie';
 import { AVAILABLE_CLASSIFICATIONS, AVAILABLE_GENRES } from "../utils/movies";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -53,7 +53,7 @@ function Movies() {
         const fetchMovies = async () => {
             try {
                 setLoading(true);
-                const response = await apiGetMovies();
+                const response = await apiGetActiveMovies();
                 if (response && response.success && response.data) {
                     setMovies(response.data);
                 }

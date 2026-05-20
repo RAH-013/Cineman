@@ -18,3 +18,31 @@ CREATE TABLE user_profiles (
         REFERENCES users(id)
         ON DELETE CASCADE
 );
+
+INSERT INTO users (
+    id,
+    email,
+    password,
+    role
+)
+VALUES
+(
+    UUID(),
+    'admin@cineman.com',
+    '$2y$12$ykGsKbSnO4I9NCLlj1T2Oueci8knJGCfzLsjWFEvcwcVQQKPozGkm',
+    'admin'
+),
+(
+    UUID(),
+    'manager@cineman.com',
+    '$2y$12$fCPsfmUJ8f0.0Sp0P2NfneItpCo91XMl0a9Hg1ggiOeZR/gSzBlae',
+    'manager'
+);
+
+INSERT INTO user_profiles (user_id)
+SELECT id
+FROM users
+WHERE email IN (
+    'admin@cineman.com',
+    'manager@cineman.com'
+);

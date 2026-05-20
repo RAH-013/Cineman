@@ -1,16 +1,14 @@
 import apiAxios from "./axios";
 
-export const apiGetUsers = async (options) => {
+export const apiGetUsers = async () => {
     try {
-        const response = await apiAxios.get('/users', {
-            params: options
-        })
-
+        const response = await apiAxios.get('/users');
         return response.data;
     } catch (error) {
         console.error("Error al obtener usuarios:", error);
+        throw error;
     }
-}
+};
 
 export const apiMe = async () => {
     try {

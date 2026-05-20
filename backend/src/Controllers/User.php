@@ -229,8 +229,12 @@ class User
     {
         $id = $_GET['id'] ?? null;
 
-        if (!$id) {
+        $icon = filter_var(
+            $_GET['icon'] ?? false,
+            FILTER_VALIDATE_BOOLEAN
+        );
 
+        if (!$id) {
             http_response_code(400);
 
             echo json_encode([
@@ -241,6 +245,6 @@ class User
             return;
         }
 
-        $this->model->getAvatar($id);
+        $this->model->getAvatar($id, $icon);
     }
 }

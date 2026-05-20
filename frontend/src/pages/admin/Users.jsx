@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
-    faAddressCard,
     faTrash,
     faSearch,
     faUsers,
     faUserShield,
     faUserTie,
-    faUser
+    faUser,
+    faPeopleArrows
 } from "@fortawesome/free-solid-svg-icons"
 
 import {
@@ -19,8 +19,9 @@ import {
 import { SwalCustom, showToast } from "../../utils/modal"
 
 import AdminPanel from "../../layouts/AdminPanel"
-import Loader from "../../layouts/Loader"
 import AdminTable from "../../layouts/AdminTable"
+import Loader from "../../layouts/Loader"
+import ProfileImage from "../../components/ProfileImage"
 
 export default function Users() {
     const [users, setUsers] = useState([])
@@ -124,8 +125,8 @@ export default function Users() {
             title: 'Email',
             render: (user) => (
                 <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                        <FontAwesomeIcon icon={faUsers} className="text-gray-500 text-xs" />
+                    <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0 overflow-hidden">
+                        <ProfileImage user={user} icon={true} />
                     </div>
                     <span className="font-bold text-sm text-gray-200 group-hover:text-white transition-colors truncate max-w-50">
                         {user.email}
@@ -144,7 +145,8 @@ export default function Users() {
                 const colorClass = roleColors[user.role] || 'bg-white/5 border-white/10 text-gray-400'
 
                 return (
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider border ${colorClass}`}>
+
+                    <span className={`inline-block text-[15px] font-black px-2 py-0.5 rounded border uppercase tracking-widest ${colorClass}`}>
                         {user.role}
                     </span>
                 )
@@ -161,7 +163,7 @@ export default function Users() {
         {
             title: 'Teléfono',
             render: (user) => (
-                <span className="text-sm font-medium text-gray-300">
+                <span className="text-sm font-medium text-gray-300 block truncate max-w-37.5">
                     {user.phone || "---"}
                 </span>
             )
@@ -172,7 +174,7 @@ export default function Users() {
             render: (user) => (
                 <div className="flex justify-end gap-2">
                     <button onClick={() => handleOpenPanel(user)} className="cursor-pointer w-9 h-9 rounded-lg bg-white/5 hover:bg-violet-600/20 text-gray-400 hover:text-violet-400 transition-all border border-white/5 hover:border-violet-500/30">
-                        <FontAwesomeIcon icon={faAddressCard} className="text-xs" />
+                        <FontAwesomeIcon icon={faPeopleArrows} className="text-xs" />
                     </button>
                     <button onClick={() => handleDelete(user)} className="cursor-pointer w-9 h-9 rounded-lg bg-white/5 hover:bg-red-600/20 text-gray-400 hover:text-red-400 transition-all border border-white/5 hover:border-red-500/30">
                         <FontAwesomeIcon icon={faTrash} className="text-xs" />
@@ -202,7 +204,8 @@ export default function Users() {
                         <div className="relative w-full sm:w-80">
                             <input
                                 type="text"
-                                placeholder="Email, nombre o apellido..."
+                                autoComplete='off'
+                                placeholder="Buscar"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 className="w-full bg-black/40 border border-white/10 rounded-lg py-2 px-4 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/50 transition-all"

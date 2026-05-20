@@ -303,7 +303,7 @@ function UserOptions({ collapsed }) {
                                             logout
                                     })
                                 }}
-                                className="group flex items-center justify-between rounded-2xl border border-red-500/10 bg-red-500/10 px-5 py-4 text-red-400 transition-all duration-300 hover:border-red-500/20 hover:bg-red-500/20 hover:text-red-300"
+                                className="cursor-pointer group flex items-center justify-between rounded-2xl border border-red-500/10 bg-red-500/10 px-5 py-4 text-red-400 transition-all duration-300 hover:border-red-500/20 hover:bg-red-500/20 hover:text-red-300"
                             >
                                 <span className="font-medium">
                                     Cerrar sesión
