@@ -1,8 +1,14 @@
 import axios from "axios";
+import rateLimit from "axios-rate-limit";
 
-const apiAxios = axios.create({
+const baseAxios = axios.create({
     baseURL: "/api",
     withCredentials: true,
+});
+
+const apiAxios = rateLimit(baseAxios, {
+    maxRequests: 3,
+    perMilliseconds: 1000
 });
 
 apiAxios.interceptors.response.use(
