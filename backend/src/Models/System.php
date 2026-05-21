@@ -182,28 +182,36 @@ class System
         ];
     }
 
-    public function getLogs(int $limit = 100): array
+    public function getLogs(int $limit = 100, int $offset = 0): array
     {
-        $sql = "
-            SELECT *
-            FROM logs
-            ORDER BY created_at DESC
-            LIMIT :limit
-        ";
+        try {
+            $sql = "
+                SELECT *
+                FROM logs
+                ORDER BY created_at DESC
+                LIMIT :limit OFFSET :offset
+            ";
 
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-        $stmt->execute();
+            $stmt = $this->db->prepare($sql);
+            
+            $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+            $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+            
+            $stmt->execute();
 
-        $logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $logs = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-        foreach ($logs as &$log) {
-            $log['context'] = $log['context']
-                ? json_decode($log['context'], true)
-                : null;
+            foreach ($logs as &$log) {
+                $log['context'] = !empty($log['context'])
+                    ? json_decode($log['context'], true)
+                    : null;
+            }
+
+            return $logs;
+
+        } catch (\Throwable $e) {
+            return [];
         }
-
-        return $logs;
     }
 
     public function createLog(array $data): bool

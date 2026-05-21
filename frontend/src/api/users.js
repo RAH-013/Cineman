@@ -62,7 +62,9 @@ export const apiUserDelete = async (user_id) => {
 
 export const apiGetUserProfile = async (id) => {
     try {
-        const response = await apiAxios.get(`/users/profile/${id}`);
+        const response = await apiAxios.get("/users/get", {
+            params: { id }
+        });
         return response.data;
     } catch (error) {
         console.error("Error en obtener información del usuario:", error);

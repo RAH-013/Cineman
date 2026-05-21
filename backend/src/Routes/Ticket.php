@@ -10,7 +10,6 @@ $controller = new Ticket();
     POST /api/tickets
 */
 if ($route === '' && $method === 'POST') {
-
     $auth = AuthMiddleware::requireAuth();
 
     AuthMiddleware::requireRole([
@@ -19,11 +18,7 @@ if ($route === '' && $method === 'POST') {
         'manager'
     ]);
 
-    $controller->create(
-        $auth['id']
-    );
-
-    exit;
+    return $controller->create($auth['id']);
 }
 
 /*
@@ -31,7 +26,6 @@ if ($route === '' && $method === 'POST') {
     GET /api/tickets/
 */
 if ($route === '' && $method === 'GET') {
-
     $auth = AuthMiddleware::requireAuth();
 
     AuthMiddleware::requireRole([
@@ -40,11 +34,7 @@ if ($route === '' && $method === 'GET') {
         'manager'
     ]);
 
-    $controller->getOccupiedSeats(
-        $auth['id']
-    );
-
-    exit;
+    return $controller->getOccupiedSeats($auth['id']);
 }
 
 /*
@@ -52,7 +42,6 @@ if ($route === '' && $method === 'GET') {
     GET /api/tickets/me
 */
 if ($route === '/me' && $method === 'GET') {
-
     $auth = AuthMiddleware::requireAuth();
 
     AuthMiddleware::requireRole([
@@ -61,11 +50,7 @@ if ($route === '/me' && $method === 'GET') {
         'manager'
     ]);
 
-    $controller->getByUserId(
-        $auth['id']
-    );
-
-    exit;
+    return $controller->getByUserId($auth['id']);
 }
 
 /*
@@ -73,7 +58,6 @@ if ($route === '/me' && $method === 'GET') {
     PATCH /api/tickets/pay
 */
 if ($route === '/pay' && $method === 'PATCH') {
-
     $auth = AuthMiddleware::requireAuth();
 
     AuthMiddleware::requireRole([
@@ -82,11 +66,7 @@ if ($route === '/pay' && $method === 'PATCH') {
         'manager'
     ]);
 
-    $controller->markAsPaid(
-        $auth['id']
-    );
-
-    exit;
+    return $controller->markAsPaid($auth['id']);
 }
 
 /*
@@ -94,7 +74,6 @@ if ($route === '/pay' && $method === 'PATCH') {
     PATCH /api/tickets/cancel
 */
 if ($route === '/cancel' && $method === 'PATCH') {
-
     $auth = AuthMiddleware::requireAuth();
 
     AuthMiddleware::requireRole([
@@ -103,9 +82,14 @@ if ($route === '/cancel' && $method === 'PATCH') {
         'manager'
     ]);
 
-    $controller->cancel(
-        $auth['id']
-    );
-
-    exit;
+    return $controller->cancel($auth['id']);
 }
+
+/*
+    FALLBACK PARA TICKETS
+*/
+http_response_code(405);
+return [
+    'success' => false,
+    'message' => 'Método o ruta no permitida en Tickets'
+];

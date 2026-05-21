@@ -14,41 +14,32 @@ class Ticket
         $this->model = new TicketModel();
     }
 
-    public function getOccupiedSeats(string $id): void
+    public function getOccupiedSeats(string $userId): array
     {
         $showtimeId = $_GET['showtime_id'] ?? null;
 
         if (!$showtimeId) {
-
             http_response_code(400);
-
-            echo json_encode([
+            return [
                 'success' => false,
                 'message' => 'Falta showtime_id'
-            ]);
-
-            return;
+            ];
         }
 
-        $seats = $this->model->getOccupiedSeats(
-            $showtimeId,
-            $id
-        );
+        $seats = $this->model->getOccupiedSeats($showtimeId, $userId);
 
-        echo json_encode([
+        return [
             'success' => true,
             'data' => $seats
-        ]);
+        ];
     }
 
-    public function create(string $userId): void
+    public function create(string $userId): array
     {
-        $body = json_decode(
-            file_get_contents('php://input'),
-            true
-        );
+        $body = json_decode(file_get_contents('php://input'), true);
 
         if (
+            !$body || 
             !isset(
                 $body['showtime_id'],
                 $body['seat_row'],
@@ -56,15 +47,11 @@ class Ticket
                 $body['total_price']
             )
         ) {
-
             http_response_code(400);
-
-            echo json_encode([
+            return [
                 'success' => false,
-                'message' => 'Campos faltantes'
-            ]);
-
-            return;
+                'message' => 'Campos faltantes o JSON inválido'
+            ];
         }
 
         $id = UUID::generate();
@@ -79,110 +66,80 @@ class Ticket
         );
 
         if (!$result['success']) {
-
             http_response_code(409);
-
-            echo json_encode($result);
-
-            return;
+            return $result;
         }
 
-        echo json_encode([
+        return [
             'success' => true,
             'message' => $result['message'],
             'id' => $id
-        ]);
+        ];
     }
 
-    public function getByUserId(string $userId): void
+    public function getByUserId(string $userId): array
     {
         $tickets = $this->model->getByUserId($userId);
 
-        echo json_encode([
+        return [
             'success' => true,
             'data' => $tickets
-        ]);
+        ];
     }
 
-    public function markAsPaid(string $userId): void
+    public function markAsPaid(string $userId): array
     {
-        $body = json_decode(
-            file_get_contents('php://input'),
-            true
-        );
+        $body = json_decode(file_get_contents('php://input'), true);
 
         if (!isset($body['id'])) {
-
             http_response_code(400);
-
-            echo json_encode([
+            return [
                 'success' => false,
                 'message' => 'Falta ID'
-            ]);
-
-            return;
+            ];
         }
 
-        $success = $this->model->markAsPaid(
-            $body['id']
-        );
+        $success = $this->model->markAsPaid($body['id']);
 
         if (!$success) {
-
             http_response_code(500);
-
-            echo json_encode([
+            return [
                 'success' => false,
                 'message' => 'No se pudo completar el pago'
-            ]);
-
-            return;
+            ];
         }
 
-        echo json_encode([
+        return [
             'success' => true,
             'message' => 'Pago completado correctamente'
-        ]);
+        ];
     }
 
-    public function cancel(string $userId): void
+    public function cancel(string $userId): array
     {
-        $body = json_decode(
-            file_get_contents('php://input'),
-            true
-        );
+        $body = json_decode(file_get_contents('php://input'), true);
 
         if (!isset($body['id'])) {
-
             http_response_code(400);
-
-            echo json_encode([
+            return [
                 'success' => false,
                 'message' => 'Falta ID'
-            ]);
-
-            return;
+            ];
         }
 
-        $success = $this->model->cancel(
-            $body['id']
-        );
+        $success = $this->model->cancel($body['id']);
 
         if (!$success) {
-
             http_response_code(500);
-
-            echo json_encode([
+            return [
                 'success' => false,
                 'message' => 'No se pudo cancelar el ticket'
-            ]);
-
-            return;
+            ];
         }
 
-        echo json_encode([
+        return [
             'success' => true,
             'message' => 'Ticket eliminado correctamente'
-        ]);
+        ];
     }
 }

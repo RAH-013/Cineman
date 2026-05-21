@@ -2,13 +2,7 @@ import React from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faXmark } from "@fortawesome/free-solid-svg-icons"
 
-export default function AdminPanel({
-    isOpen,
-    onClose,
-    title,
-    children,
-    formId
-}) {
+export default function AdminPanel({ isOpen, onClose, title, children, formId }) {
     return (
         <div className={`fixed inset-0 z-50 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />

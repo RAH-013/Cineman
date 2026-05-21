@@ -10,14 +10,8 @@ $controller = new Movie();
     POST /api/movies
 */
 if ($route === '' && $method === 'POST') {
-
-    AuthMiddleware::requireRole([
-        'admin',
-        'manager'
-    ]);
-
-    $controller->create();
-    exit;
+    AuthMiddleware::requireRole(['admin', 'manager']);
+    return $controller->create();
 }
 
 /*
@@ -25,123 +19,81 @@ if ($route === '' && $method === 'POST') {
     PUT /api/movies
 */
 if ($route === '' && $method === 'PUT') {
-
-    AuthMiddleware::requireRole([
-        'admin',
-        'manager'
-    ]);
-
-    $body = json_decode(
-        file_get_contents('php://input'),
-        true
-    );
+    AuthMiddleware::requireRole(['admin', 'manager']);
+    $body = json_decode(file_get_contents('php://input'), true);
 
     if (!isset($body['id'])) {
-
         http_response_code(400);
-
-        echo json_encode([
+        return [
             'success' => false,
             'message' => 'Falta ID'
-        ]);
-
-        exit;
+        ];
     }
 
     $id = $body['id'];
-
     unset($body['id']);
 
-    $controller->update(
-        $id,
-        $body
-    );
-
-    exit;
+    return $controller->update($id, $body);
 }
 
 /*
     DELETE MOVIE
-    DELETE /api/movies/?id=UUID
+    DELETE /api/movies?id=UUID
 */
-if ($route === '/' && $method === 'DELETE') {
-
-    AuthMiddleware::requireRole([
-        'admin',
-        'manager'
-    ]);
-
+if ($route === '' && $method === 'DELETE') {
+    AuthMiddleware::requireRole(['admin', 'manager']);
     $id = $_GET['id'] ?? null;
 
     if (!$id) {
-
         http_response_code(400);
-
-        echo json_encode([
+        return [
             'success' => false,
             'message' => 'Falta ID'
-        ]);
-
-        exit;
+        ];
     }
 
-    $controller->delete($id);
-    exit;
+    return $controller->delete($id);
 }
 
 /*
-    GET MOVIE BY ID
-    GET /api/movies/?id=
-*/
-if ($route === '/' && $method === 'GET') {
-    $controller->findById();
-    exit;
-}
-
-/*
-    GET MOVIE BY TITLE
-    GET /api/movies/?title=
-*/
-if ($route === '/search' && $method === 'GET') {
-
-    $controller->findByTitle();
-    exit;
-}
-
-/*
-    GET ALL MOVIES
-    GET /api/movies
+    GET MOVIES (Panel de Administración)
+    GET /api/movies o GET /api/movies?id=UUID
 */
 if ($route === '' && $method === 'GET') {
-    AuthMiddleware::requireRole([
-        'admin',
-        'manager'
-    ]);
+    AuthMiddleware::requireRole(['admin', 'manager']);
 
-    $controller->get();
-    exit;
+    if (isset($_GET['id']) && !empty($_GET['id'])) {
+        return $controller->findById();
+    }
+
+    return $controller->get();
 }
 
 /*
-    GET INACTIVE MOVIES
-    GET /api/movies/inactive
-*/
-if ($route === '/inactive' && $method === 'GET') {
-    AuthMiddleware::requireRole([
-        'admin',
-        'manager'
-    ]);
-
-    $controller->getInactive();
-    exit;
-}
-
-/*
-    GET ACTIVE MOVIES
-    GET /api/movies/active
+    GET ACTIVE MOVIES (Cartelera Pública)
+    GET /api/movies/active o GET /api/movies/active?id=UUID
 */
 if ($route === '/active' && $method === 'GET') {
+    if (isset($_GET['id']) && !empty($_GET['id'])) {
+        return $controller->findActiveById();
+    }
 
-    $controller->getActive();
-    exit;
+    return $controller->getActive();
 }
+
+/*
+    FALLBACK PARA MOVIES
+*/
+if ($route === '') {
+    http_response_code(405);
+    return [
+        'success' => false,
+        'message' => 'Método ' . $method . ' no permitido para este endpoint'
+    ];
+}
+
+http_response_code(404);
+return [
+    'success' => false,
+    'message' => 'Acción no encontrada en el módulo de películas'
+];

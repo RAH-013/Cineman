@@ -1,11 +1,6 @@
 import { useEffect } from "react"
 
-function Menu({
-    open,
-    onClose,
-    children,
-    className = ""
-}) {
+function Menu({ open, onClose, children, className = "" }) {
     useEffect(() => {
         document.body.style.overflow =
             open ? "hidden" : ""

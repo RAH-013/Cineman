@@ -1,7 +1,5 @@
 import { useState } from "react"
-
 import { Link, useLocation } from "react-router-dom"
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 import {
@@ -13,12 +11,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 
 import UserOptions from "./UserOptions"
-
 import Images from "../layouts/Images"
 
 function Header() {
     const [collapsed, setCollapsed] = useState(true)
-
     const { pathname } = useLocation()
 
     const links = [
@@ -52,16 +48,12 @@ function Header() {
                 />
             </button>
 
-            <aside
-                className={`flex flex-col z-40 justify-between h-screen border-r border-white/10 bg-[rgba(10,10,15)] backdrop-blur-3xl transition-[width] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-[width] ${collapsed ? "w-25" : "w-65"}`}
-            >
+            <aside className={`flex flex-col z-40 justify-between h-screen border-r border-white/10 bg-[rgba(10,10,15)] backdrop-blur-3xl transition-[width] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-[width] ${collapsed ? "w-25" : "w-65"}`}>
                 <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top,rgba(139,92,246,0.18),transparent_40%)]" />
-
                 <div className="relative flex flex-col h-full">
                     <div className="flex items-center gap-3 p-5">
                         <div className="relative shrink-0">
                             <div className="absolute inset-0 rounded-full bg-violet-500/20 blur-2xl" />
-
                             <Images
                                 src="/Logo.png"
                                 alt="Cineman"

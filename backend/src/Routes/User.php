@@ -10,8 +10,7 @@ $controller = new User();
     POST /api/users/login
 */
 if ($route === '/login' && $method === 'POST') {
-    $controller->login();
-    exit;
+    return $controller->login();
 }
 
 /*
@@ -19,11 +18,8 @@ if ($route === '/login' && $method === 'POST') {
     POST /api/users/logout
 */
 if ($route === '/logout' && $method === 'POST') {
-
     AuthMiddleware::requireAuth();
-
-    $controller->logout();
-    exit;
+    return $controller->logout();
 }
 
 /*
@@ -31,8 +27,7 @@ if ($route === '/logout' && $method === 'POST') {
     POST /api/users
 */
 if ($route === '' && $method === 'POST') {
-    $controller->create();
-    exit;
+    return $controller->create();
 }
 
 /*
@@ -40,160 +35,100 @@ if ($route === '' && $method === 'POST') {
     PUT /api/users
 */
 if ($route === '' && $method === 'PUT') {
-
     $auth = AuthMiddleware::requireAuth();
+    $body = json_decode(file_get_contents('php://input'), true);
 
-    $body = json_decode(
-        file_get_contents('php://input'),
-        true
-    );
-
-    /*
-        Admin can edit anyone.
-        User can only edit self.
-    */
     $targetId = $body['id'] ?? $auth['id'];
-
     $isOwner = $auth['id'] === $targetId;
     $isAdmin = $auth['role'] === 'admin';
 
     if (!$isOwner && !$isAdmin) {
-
         http_response_code(403);
-
-        echo json_encode([
-            'success' => false,
-            'message' => 'Contenido Protegido'
-        ]);
-
-        exit;
+        return ['success' => false, 'message' => 'Contenido Protegido'];
     }
 
-    /*
-        Only admin can change roles
-    */
-    if (
-        isset($body['role']) &&
-        !$isAdmin
-    ) {
-
+    if (isset($body['role']) && !$isAdmin) {
         http_response_code(403);
-
-        echo json_encode([
-            'success' => false,
-            'message' => 'Acción prohibida para tu usuario'
-        ]);
-
-        exit;
+        return ['success' => false, 'message' => 'Acción prohibida para tu usuario'];
     }
 
-    $controller->update(
-        $targetId,
-        $body,
-        $isOwner
-    );
-
-    exit;
+    return $controller->update($targetId, $body, $isOwner);
 }
 
 /*
-    DELETE USER (OWNER OR ADMIN)
+    DELETE USER
     DELETE /api/users
 */
 if ($route === '' && $method === 'DELETE') {
-
     $auth = AuthMiddleware::requireAuth();
-
-    $body = json_decode(
-        file_get_contents('php://input'),
-        true
-    );
-
     $id = $_GET['user_id'] ?? $auth['id'];
 
     $isOwner = $auth['id'] === $id;
     $isAdmin = $auth['role'] === 'admin';
 
     if (!$isOwner && !$isAdmin) {
-
         http_response_code(403);
-
-        echo json_encode([
-            'success' => false,
-            'message' => 'Protegido'
-        ]);
-
-        exit;
+        return ['success' => false, 'message' => 'Protegido'];
     }
 
-    $controller->delete($id, $isOwner);
-    exit;
+    return $controller->delete($id, $isOwner);
 }
 
 /*
-    GET USER BY ID (OWNER OR ADMIN)
-    POST /api/users/get
+    GET USER BY ID
 */
 if ($route === '/get' && $method === 'GET') {
-
     $auth = AuthMiddleware::requireAuth();
-
     $id = $_GET['id'] ?? $auth['id'];
 
     $isOwner = $auth['id'] === $id;
     $isAdmin = $auth['role'] === 'admin';
 
     if (!$isOwner && !$isAdmin) {
-
         http_response_code(403);
-
-        echo json_encode([
-            'success' => false,
-            'message' => 'Protegido'
-        ]);
-
-        exit;
+        return ['success' => false, 'message' => 'Protegido'];
     }
 
     $_GET['id'] = $id;
-
-    $controller->findById();
-    exit;
+    return $controller->findById();
 }
 
 /*
-    GET ALL USERS (ADMIN ONLY)
-    GET /api/users
+    GET ALL USERS
 */
 if ($route === '' && $method === 'GET') {
-
     $auth = AuthMiddleware::requireAuth();
 
     if ($auth['role'] !== 'admin') {
-
         http_response_code(403);
-
-        echo json_encode([
-            'success' => false,
-            'message' => 'Contenido protegido'
-        ]);
-
-        exit;
+        return ['success' => false, 'message' => 'Contenido protegido'];
     }
 
-    $controller->get($auth['id']);
-    exit;
+    return $controller->get($auth['id']);
 }
 
 /*
-    GET USER AVATAR
+    AVATAR (SVG STREAM)
     GET /api/users/avatar
 */
 if ($route === '/avatar' && $method === 'GET') {
-
     AuthMiddleware::requireAuth();
 
-    $controller->getAvatar();
+    $svg = $controller->getAvatar(
+        $_GET['id'] ?? null,
+        filter_var($_GET['icon'] ?? false, FILTER_VALIDATE_BOOLEAN)
+    );
 
-    exit;
+    header('Content-Type: image/svg+xml');
+    echo $svg;
+    exit; 
 }
+
+/*
+    FALLBACK PARA USERS
+*/
+http_response_code(405);
+return [
+    'success' => false,
+    'message' => 'Método o ruta no permitida en Usuarios'
+];

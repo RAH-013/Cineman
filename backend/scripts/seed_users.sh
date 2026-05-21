@@ -77,4 +77,4 @@ EOF
   echo "Creado: $EMAIL ($ROLE)"
 done
 
-echo "Seed completado."
+echo "Usuarios añadidos correctamente ✅"

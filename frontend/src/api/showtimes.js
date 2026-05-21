@@ -12,7 +12,7 @@ export const apiGetShowtimes = async () => {
 
 export const apiGetShowtimeById = async (id) => {
     try {
-        const { data } = await apiAxios.get('/showtimes/', {
+        const { data } = await apiAxios.get('/showtimes', {
             params: { id }
         });
 
@@ -25,7 +25,7 @@ export const apiGetShowtimeById = async (id) => {
 
 export const apiGetShowtimesByMovie = async (movieId) => {
     try {
-        const { data } = await apiAxios.get('/showtimes/movie/', {
+        const { data } = await apiAxios.get('/showtimes/movie', {
             params: { movie_id: movieId }
         });
 
@@ -62,7 +62,7 @@ export const apiUpdateShowtime = async (id, showtime) => {
 
 export const apiDeleteShowtime = async (id) => {
     try {
-        const { data } = await apiAxios.delete('/showtimes/', {
+        const { data } = await apiAxios.delete('/showtimes', {
             params: { id }
         });
 

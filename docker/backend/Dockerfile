@@ -12,6 +12,12 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /var/www/html
 
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 EXPOSE 80
+
+ENTRYPOINT ["entrypoint.sh"]
 
 CMD ["apache2-foreground"]

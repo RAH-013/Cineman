@@ -17,7 +17,6 @@ export default function Showtimes() {
     const [loading, setLoading] = useState(true)
     const [filter, setFilter] = useState('all')
 
-    // Controles para el Panel
     const [isPanelOpen, setIsPanelOpen] = useState(false)
     const [selectedShowtime, setSelectedShowtime] = useState(null)
 

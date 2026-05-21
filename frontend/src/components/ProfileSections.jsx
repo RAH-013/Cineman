@@ -64,7 +64,10 @@ function ProfileSections({
             setIsSaving(true);
             const dataToUpdate = {
                 ...form,
-                ...(passwords.password && { newPassword: passwords.password, prevPassword: passwords.prevPassword })
+                ...(passwords.password && {
+                    password: passwords.password,
+                    prevPassword: passwords.prevPassword
+                })
             };
 
             const { success } = await apiUpdate(dataToUpdate);

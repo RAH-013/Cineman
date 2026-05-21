@@ -1,12 +1,12 @@
 import React from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
-import Images from '../layouts/Images';
 import { formatDateTime } from '../utils/ticket';
+
+import Images from '../layouts/Images';
 
 export default function TicketDetail({ ticket, onClose }) {
     if (!ticket) return null;
-
     const { date, time } = formatDateTime(ticket.start_time);
 
     return (
@@ -14,7 +14,7 @@ export default function TicketDetail({ ticket, onClose }) {
             <div className="w-full p-6 md:p-8 shrink-0 flex items-center justify-between z-20">
                 <button
                     onClick={onClose}
-                    className="group flex items-center gap-3 text-white/80 hover:text-white transition-all uppercase tracking-widest text-xs font-black backdrop-blur-md bg-white/5 px-5 py-3 rounded-full border border-white/10 hover:border-[#8B5CF6]/50 hover:bg-[#8B5CF6]/10"
+                    className="cursor-pointer group flex items-center gap-3 text-white/80 hover:text-white transition-all uppercase tracking-widest text-xs font-black backdrop-blur-md bg-white/5 px-5 py-3 rounded-full border border-white/10 hover:border-[#8B5CF6]/50 hover:bg-[#8B5CF6]/10"
                 >
                     <FontAwesomeIcon icon={faArrowLeft} className="group-hover:-translate-x-1 transition-transform" />
                     Volver a mis boletos

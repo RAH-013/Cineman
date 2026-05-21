@@ -46,13 +46,7 @@ class Auth
 
         if (!$user) {
             http_response_code(401);
-
-            echo json_encode([
-                'success' => false,
-                'message' => 'Identificate'
-            ]);
-
-            exit;
+            throw new \Exception('Unauthorized');
         }
 
         return $user;
@@ -64,13 +58,7 @@ class Auth
 
         if (!in_array($user['role'], $allowedRoles, true)) {
             http_response_code(403);
-
-            echo json_encode([
-                'success' => false,
-                'message' => 'Contenido protegido'
-            ]);
-
-            exit;
+            throw new \Exception('Forbidden');
         }
 
         return $user;

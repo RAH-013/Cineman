@@ -7,64 +7,71 @@ $controller = new System();
 
 /*
     GET LAST BACKUP
-    GET /api/system/lastBackup
+    GET /api/system/last-backup
 */
-if ($route === '/lastBackup' && $method === 'GET') {
-
-    AuthMiddleware::requireRole([
-        'admin'
-    ]);
-
+if ($route === '/last-backup' && $method === 'GET') {
+    AuthMiddleware::requireRole(['admin']);
     $_GET['new'] = false;
 
-    $controller->getBackup();
-
-    exit;
+    return $controller->getBackup();
 }
 
 /*
     CREATE NEW BACKUP
-    GET /api/system/newBackup
+    GET /api/system/new-backup
 */
-if ($route === '/newBackup' && $method === 'GET') {
-
-    AuthMiddleware::requireRole([
-        'admin'
-    ]);
-
+if ($route === '/new-backup' && $method === 'GET') {
+    AuthMiddleware::requireRole(['admin']);
     $_GET['new'] = true;
 
-    $controller->getBackup();
-
-    exit;
+    return $controller->getBackup();
 }
 
 /*
     USERS SEED
-    POST /api/system/usersSeed
+    POST /api/system/users-seed
 */
-if ($route === '/usersSeed' && $method === 'POST') {
+if ($route === '/users-seed' && $method === 'POST') {
+    AuthMiddleware::requireRole(['admin']);
 
-    AuthMiddleware::requireRole([
-        'admin'
-    ]);
-
-    $controller->setUsers();
-
-    exit;
+    return $controller->setUsers();
 }
 
 /*
     RESTORE BACKUP
-    POST /api/system/restoreBackup
+    POST /api/system/restore-backup
 */
-if ($route === '/restoreBackup' && $method === 'POST') {
+if ($route === '/restore-backup' && $method === 'POST') {
+    AuthMiddleware::requireRole(['admin']);
 
-    AuthMiddleware::requireRole([
-        'admin'
-    ]);
-
-    $controller->setBackup();
-
-    exit;
+    return $controller->setBackup();
 }
+
+/*
+    CREATE LOG
+    POST /api/system/logs
+*/
+if ($route === '/logs' && $method === 'POST') {
+    AuthMiddleware::requireRole(['admin']);
+
+    return $controller->createLog();
+}
+
+/*
+    GET LOGS
+    GET /api/system/logs
+*/
+if ($route === '/logs' && $method === 'GET') {
+    AuthMiddleware::requireRole(['admin']);
+
+    return $controller->getLogs();
+}
+
+/*
+    FALLBACK PARA SITEMA
+*/
+http_response_code(405);
+return [
+    'success' => false,
+    'message' => 'Método o ruta no permitida en Sistema'
+];

@@ -9,11 +9,8 @@ import InputField from "../layouts/InputField"
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
     const navigate = useNavigate();
-
     const { login } = useContext(UserContext)
-
     const isFormValid = email && password
 
     const handleSubmit = async (e) => {

@@ -14,14 +14,12 @@ class Movie
         $this->model = new MovieModel();
     }
 
-    public function create(): void
+    public function create(): array
     {
-        $body = json_decode(
-            file_get_contents('php://input'),
-            true
-        );
+        $body = json_decode(file_get_contents('php://input'), true);
 
         if (
+            !$body ||
             !isset(
                 $body['title'],
                 $body['director'],
@@ -34,15 +32,11 @@ class Movie
                 $body['release_date']
             )
         ) {
-
             http_response_code(400);
-
-            echo json_encode([
+            return [
                 'success' => false,
-                'message' => 'Campos faltantes'
-            ]);
-
-            return;
+                'message' => 'Campos faltantes o JSON inválido'
+            ];
         }
 
         $id = UUID::generate();
@@ -62,172 +56,117 @@ class Movie
         );
 
         if (!$created) {
-
             http_response_code(500);
-
-            echo json_encode([
+            return [
                 'success' => false,
                 'message' => 'No se pudo crear la película'
-            ]);
-
-            return;
+            ];
         }
 
-        echo json_encode([
+        return [
             'success' => true,
             'id' => $id
-        ]);
+        ];
     }
 
-    public function update(
-        string $id,
-        array $data
-    ): void
+    public function update(string $id, array $data): array
     {
-        $updated = $this->model->update(
-            $id,
-            $data
-        );
+        $updated = $this->model->update($id, $data);
 
         if (!$updated) {
-
             http_response_code(500);
-
-            echo json_encode([
+            return [
                 'success' => false,
                 'message' => 'No se pudo actualizar la película'
-            ]);
-
-            return;
+            ];
         }
 
-        echo json_encode([
+        return [
             'success' => true,
             'message' => 'Película actualizada correctamente'
-        ]);
+        ];
     }
 
-    public function delete(string $id): void
+    public function delete(string $id): array
     {
         $deleted = $this->model->delete($id);
 
         if (!$deleted) {
-
             http_response_code(500);
-
-            echo json_encode([
+            return [
                 'success' => false,
                 'message' => 'No se pudo eliminar la película'
-            ]);
-
-            return;
+            ];
         }
 
-        echo json_encode([
+        return [
             'success' => true,
             'message' => 'Película eliminada'
-        ]);
+        ];
     }
 
-    public function findById(): void
+    public function findById(?string $id = null): array
     {
-        $id = $_GET['id'] ?? null;
+        $id = $id ?? ($_GET['id'] ?? null);
 
         if (!$id) {
-
             http_response_code(400);
-
-            echo json_encode([
+            return [
                 'success' => false,
                 'message' => 'Falta ID'
-            ]);
-
-            return;
+            ];
         }
 
         $movie = $this->model->getById($id);
 
         if (!$movie) {
-
             http_response_code(404);
-
-            echo json_encode([
+            return [
                 'success' => false,
                 'message' => 'Película no encontrada'
-            ]);
-
-            return;
+            ];
         }
 
-        echo json_encode([
+        return [
             'success' => true,
             'data' => $movie
-        ]);
+        ];
     }
 
-    public function findByTitle(): void
+    public function findActiveById(): array
     {
-        $title = $_GET['title'] ?? null;
+        $response = $this->findById();
 
-        if (!$title) {
-
-            http_response_code(400);
-
-            echo json_encode([
-                'success' => false,
-                'message' => 'Falta el título'
-            ]);
-
-            return;
+        if (!$response['success']) {
+            return $response;
         }
 
-        $movies = $this->model->findByTitle($title);
+        $movie = $response['data'];
 
-        if (empty($movies)) {
-
+        if (isset($movie['is_active']) && (bool)$movie['is_active'] === false) {
             http_response_code(404);
-
-            echo json_encode([
+            return [
                 'success' => false,
-                'message' => 'No se encontraron películas'
-            ]);
-
-            return;
+                'message' => 'Película no encontrada'
+            ];
         }
 
-        echo json_encode([
-            'success' => true,
-            'data' => $movies
-        ]);
+        return $response;
     }
 
-    public function get(): void
+    public function get(): array
     {
-        $movies = $this->model->get();
-
-        echo json_encode([
+        return [
             'success' => true,
-            'data' => $movies
-        ]);
+            'data' => $this->model->get()
+        ];
     }
 
-    public function getActive(): void
+    public function getActive(): array
     {
-        $movies = $this->model->get(true);
-
-        echo json_encode([
+        return [
             'success' => true,
-            'data' => $movies
-        ]);
-    }
-
-    public function getInactive(): void
-    {
-        $movies = $this->model->get(false);
-
-        echo json_encode([
-            'success' => true,
-            'data' => $movies
-        ]);
+            'data' => $this->model->get(true)
+        ];
     }
 }

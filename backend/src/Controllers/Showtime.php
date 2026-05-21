@@ -14,12 +14,9 @@ class Showtime
         $this->model = new ShowtimeModel();
     }
 
-    public function create(): void
+    public function create(): array
     {
-        $body = json_decode(
-            file_get_contents('php://input'),
-            true
-        );
+        $body = json_decode(file_get_contents('php://input'), true);
 
         if (
             !isset(
@@ -31,15 +28,12 @@ class Showtime
                 $body['price']
             )
         ) {
-
             http_response_code(400);
 
-            echo json_encode([
+            return [
                 'success' => false,
                 'message' => 'Campos faltantes'
-            ]);
-
-            return;
+            ];
         }
 
         $id = UUID::generate();
@@ -55,92 +49,71 @@ class Showtime
         );
 
         if (!$result['success']) {
-
             http_response_code(409);
 
-            echo json_encode($result);
-
-            return;
+            return $result;
         }
 
-        echo json_encode([
+        return [
             'success' => true,
             'message' => $result['message'],
             'id' => $id
-        ]);
+        ];
     }
 
-    public function update(
-        string $id,
-        array $data
-    ): void {
-
-        $result = $this->model->update(
-            $id,
-            $data
-        );
+    public function update(string $id, array $data): array
+    {
+        $result = $this->model->update($id, $data);
 
         if (!$result['success']) {
-
             http_response_code(409);
 
-            echo json_encode($result);
-
-            return;
+            return $result;
         }
 
-        echo json_encode($result);
+        return $result;
     }
 
-    public function delete(string $id): void
+    public function delete(string $id): array
     {
         $deleted = $this->model->delete($id);
 
         if (!$deleted) {
-
             http_response_code(500);
 
-            echo json_encode([
+            return [
                 'success' => false,
                 'message' => 'No se pudo eliminar la función'
-            ]);
-
-            return;
+            ];
         }
 
-        echo json_encode([
+        return [
             'success' => true,
             'message' => 'Función eliminada'
-        ]);
+        ];
     }
 
-    public function findByMovieId(string $id): void
+    public function findByMovieId(string $id): array
     {
-        $showtimes = $this->model->getByMovieId($id);
-
-        echo json_encode([
+        return [
             'success' => true,
-            'data' => $showtimes
-        ]);
+            'data' => $this->model->getByMovieId($id)
+        ];
     }
 
-    public function findById(string $id): void
+    public function findById(string $id): array
     {
-        $showtimes = $this->model->getById($id);
-
-        echo json_encode([
+        return [
             'success' => true,
-            'data' => $showtimes
-        ]);
+            'data' => $this->model->getById($id)
+        ];
     }
 
-    public function get(): void
+    public function get(): array
     {
-        $showtimes = $this->model->get();
-
-        echo json_encode([
+        return [
             'success' => true,
-            'data' => $showtimes
-        ]);
+            'data' => $this->model->get()
+        ];
     }
 }

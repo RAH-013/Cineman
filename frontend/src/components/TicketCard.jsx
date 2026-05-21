@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarDays, faClock, faLocationDot, faCouch, faBan, faCircleCheck, faHistory, faHandSparkles } from "@fortawesome/free-solid-svg-icons";
-import Images from '../layouts/Images';
 import { formatDateTime, isNewlyPurchased } from '../utils/ticket';
+
+import Images from '../layouts/Images';
 
 export default function TicketCard({ ticket, type, currentTime, onClick }) {
     const { date, time } = formatDateTime(ticket.start_time);

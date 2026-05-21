@@ -29,17 +29,14 @@ export default function AppRouter() {
         <BrowserRouter>
             <UserProvider>
                 <Routes>
-                    {/* ruta pública */}
                     <Route path="/auth" element={<Auth />} />
 
-                    {/* layout público */}
                     <Route element={<Main />}>
                         <Route path="/" element={<Home />} />
                         <Route path="/movies" element={<Movies />} />
                         <Route path="/movies/:id" element={<Movie />} />
                     </Route>
 
-                    {/* rutas privadas */}
                     <Route element={<PrivateRoute />}>
                         <Route element={<Main />}>
                             <Route path="/profile" element={<Profile />} />

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { formatDate, getYear, formatGenres, getYouTubeId, parallaxStyles } from "../utils/home"
 import { apiGetActiveMovies } from '../api/movies';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -16,38 +17,6 @@ import {
 
 import Loader from "../layouts/Loader";
 import Images from "../layouts/Images";
-
-const formatDate = (dateString) => {
-    if (!dateString) return '';
-    return new Date(dateString).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase();
-};
-
-const getYear = (dateString) => {
-    if (!dateString) return '';
-    return new Date(dateString).getFullYear();
-};
-
-const formatGenres = (genresString) => {
-    if (!genresString) return '';
-    return genresString.split(',').map(g => g.trim().charAt(0).toUpperCase() + g.trim().slice(1)).join(', ');
-};
-
-const getYouTubeId = (url) => {
-    if (!url) return '';
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = url.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : url;
-};
-
-const parallaxStyles = `
-@keyframes parallax-y {
-    0% { transform: scale(1.15) translateY(6%); }
-    100% { transform: scale(1.15) translateY(-6%); }
-}
-.parallax-poster {
-    animation: parallax-y 20s linear infinite alternate;
-}
-`;
 
 function Home() {
     const [movies, setMovies] = useState([]);

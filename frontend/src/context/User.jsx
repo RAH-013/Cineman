@@ -1,6 +1,5 @@
 import { createContext, useState, useCallback, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-
 import { apiLogout } from "../api/auth"
 import { apiMe } from "../api/users"
 
@@ -9,7 +8,6 @@ export const UserContext = createContext(null)
 export function UserProvider({ children }) {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
-
     const navigate = useNavigate()
 
     const refreshUser = useCallback(async () => {
@@ -38,21 +36,15 @@ export function UserProvider({ children }) {
                     error || "Desconocido"
                 )
             }
-
         } catch (err) {
-
             setUser(null)
-
             console.error(
                 "Error de red o excepción:",
                 err
             )
-
         } finally {
-
             setLoading(false)
         }
-
     }, [])
 
     useEffect(() => {
@@ -65,38 +57,22 @@ export function UserProvider({ children }) {
     }
 
     const logout = async () => {
-
         try {
-
             await apiLogout()
-
         } catch (err) {
-
             console.error(
                 "Error al cerrar sesión:",
                 err
             )
-
         } finally {
-
             sessionStorage.removeItem("cineman")
-
             setUser(null)
-
             navigate("/")
         }
     }
 
     return (
-        <UserContext.Provider
-            value={{
-                user,
-                loading,
-                refreshUser,
-                login,
-                logout
-            }}
-        >
+        <UserContext.Provider value={{ user, loading, refreshUser, login, logout }}>
             {children}
         </UserContext.Provider>
     )

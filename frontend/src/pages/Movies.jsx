@@ -158,7 +158,7 @@ function Movies() {
                     <div className="flex flex-col gap-2">
                         <div className="flex items-center gap-2.5 text-violet-400 font-bold text-xs uppercase tracking-[0.25em]">
                             <FontAwesomeIcon icon={faFilm} className="text-sm" />
-                            <span>Cartelera Oficial</span>
+                            <span>Cineman</span>
                         </div>
                         <h1 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter text-transparent bg-clip-text bg-linear-to-r from-white to-gray-400">
                             Cartelera

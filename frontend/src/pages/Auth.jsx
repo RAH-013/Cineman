@@ -1,17 +1,14 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons"
 
 import Login from "../components/Login"
 import Register from "../components/Register"
-
 import Images from "../layouts/Images"
 
 function Auth() {
     const [mode, setMode] = useState("login")
-
     const isLogin = mode === "login"
 
     return (

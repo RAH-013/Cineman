@@ -22,7 +22,7 @@ export const apiGetActiveMovies = async () => {
 
 export const apiGetMovie = async (id) => {
     try {
-        const { data } = await apiAxios.get('/movies/', {
+        const { data } = await apiAxios.get('/movies/active', {
             params: { id }
         });
         return data;
@@ -54,7 +54,7 @@ export const apiUpdateMovie = async (formData) => {
 
 export const apiDeleteMovie = async (id) => {
     try {
-        const { data } = await apiAxios.delete('/movies/', {
+        const { data } = await apiAxios.delete('/movies', {
             params: { id }
         });
         return data;
