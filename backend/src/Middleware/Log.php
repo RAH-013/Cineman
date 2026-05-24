@@ -43,6 +43,12 @@ class Log
 
     private function writeLog(array $request, mixed $response, ?\Throwable $exception = null): void
     {
+        $endpoint = isset($request['endpoint']) ? trim($request['endpoint'], '/') : '';
+
+        if ($endpoint === 'api') {
+            return;
+        }
+
         $statusCode = http_response_code();
         if ($statusCode === false || $statusCode === 200) {
             $statusCode = is_array($response) && isset($response['status_code']) 

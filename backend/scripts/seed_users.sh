@@ -30,7 +30,7 @@ do
   ROLE=${ROLES[$((i % ${#ROLES[@]}))]}
 
   EMAIL="${NAME,,}.${LASTNAME,,}${i}@cineman.test"
-  PASSWORD_HASH=$(openssl passwd -6 "password123")
+  PASSWORD_HASH=$(openssl passwd -6 "${NAME,,}123")
 
   EXISTS=$(mysql \
     -h "$DB_HOST" \

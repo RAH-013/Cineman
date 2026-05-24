@@ -135,7 +135,7 @@ class System
 
     public function getLogs(): array
     {
-        $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 100;
+        $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 20;
         $offset = isset($_GET['offset']) ? (int)$_GET['offset'] : 0;
 
         $logs = $this->model->getLogs($limit, $offset);
