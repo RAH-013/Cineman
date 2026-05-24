@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlus, faPen, faTrash, faFilter, faUser } from "@fortawesome/free-solid-svg-icons"
+import { faPlus, faPen, faTrash, faFilter, faUser, faSearch, faXmark } from "@fortawesome/free-solid-svg-icons"
 import { apiGetMovies, apiDeleteMovie } from "../../api/movies"
 import { SwalCustom, showToast } from "../../utils/modal"
 
@@ -14,6 +14,7 @@ export default function Movies() {
     const [movies, setMovies] = useState([])
     const [loading, setLoading] = useState(true)
     const [filter, setFilter] = useState('all')
+    const [searchTerm, setSearchTerm] = useState('')
 
     const [isPanelOpen, setIsPanelOpen] = useState(false)
     const [selectedMovie, setSelectedMovie] = useState(null)
@@ -66,7 +67,15 @@ export default function Movies() {
         })
     }
 
-    const filteredMovies = filter === 'active' ? movies.filter(mv => mv.is_active) : movies
+    const filteredMovies = movies.filter(mv => {
+        const matchesStatus = filter === 'active' ? mv.is_active : true
+        const searchLower = searchTerm.toLowerCase()
+        const matchesSearch =
+            mv.title?.toLowerCase().includes(searchLower) ||
+            mv.director?.toLowerCase().includes(searchLower)
+
+        return matchesStatus && matchesSearch
+    })
 
     const columns = useMemo(() => [
         {
@@ -182,21 +191,48 @@ export default function Movies() {
                 </div>
 
                 <div className="flex flex-col flex-1 min-h-0 bg-white/2 border border-white/5 rounded-3xl backdrop-blur-md shadow-2xl">
-                    <div className="p-6 border-b border-white/5 flex items-center justify-between bg-white/1 rounded-t-3xl shrink-0">
-                        <div className="flex items-center gap-2 text-gray-400">
-                            <FontAwesomeIcon icon={faFilter} className="text-xs" />
-                            <span className="text-xs font-bold uppercase tracking-widest">Filtrar por:</span>
-                        </div>
-                        <div className="flex bg-black/40 p-1 rounded-lg border border-white/5">
-                            {['all', 'active'].map((f) => (
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-6 border-b border-white/5 bg-white/1 rounded-t-3xl shrink-0">
+
+                        <div className="relative w-full sm:w-80">
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+                                <FontAwesomeIcon icon={faSearch} className="text-xs" />
+                            </div>
+
+                            <input
+                                type="text"
+                                placeholder="Buscar por película o director..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="w-full bg-black/40 border border-white/5 hover:border-white/10 rounded-xl py-2.5 pl-9 pr-10 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/50 transition-all shadow-inner"
+                            />
+
+                            {searchTerm && (
                                 <button
-                                    key={f}
-                                    onClick={() => setFilter(f)}
-                                    className={`cursor-pointer px-4 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest transition-all ${filter === f ? 'bg-violet-600 text-white' : 'text-gray-500 hover:text-gray-300'}`}
+                                    onClick={() => setSearchTerm('')}
+                                    title="Limpiar búsqueda"
+                                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-white transition-colors cursor-pointer"
                                 >
-                                    {f === 'all' ? 'Todas' : 'Activas'}
+                                    <FontAwesomeIcon icon={faXmark} className="text-xs" />
                                 </button>
-                            ))}
+                            )}
+                        </div>
+
+                        <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
+                            <div className="flex items-center gap-2 text-gray-400">
+                                <FontAwesomeIcon icon={faFilter} className="text-[10px]" />
+                                <span className="text-[10px] font-bold uppercase tracking-widest">Filtrar:</span>
+                            </div>
+                            <div className="flex bg-black/40 p-1 rounded-lg border border-white/5">
+                                {['all', 'active'].map((f) => (
+                                    <button
+                                        key={f}
+                                        onClick={() => setFilter(f)}
+                                        className={`cursor-pointer px-4 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest transition-all ${filter === f ? 'bg-violet-600 text-white shadow-md shadow-violet-900/20' : 'text-gray-500 hover:text-gray-300'}`}
+                                    >
+                                        {f === 'all' ? 'Todas' : 'Activas'}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
                     </div>
 

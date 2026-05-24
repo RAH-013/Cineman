@@ -13,7 +13,7 @@ class System
         $this->model = new SystemModel();
     }
 
-    public function getBackup(): array
+    public function getBackup()
     {
         $new = isset($_GET['new'])
             ? filter_var($_GET['new'], FILTER_VALIDATE_BOOLEAN)
@@ -23,30 +23,39 @@ class System
 
         if (!$result['success']) {
             http_response_code(500);
-
-            return [
+            header('Content-Type: application/json');
+            echo json_encode([
                 'success' => false,
                 'message' => $result['message'] ?? 'Error generando backup',
                 'error' => $result['error'] ?? null
-            ];
+            ]);
+            exit;
         }
 
         $file = $result['file'];
 
         if (!file_exists($file)) {
             http_response_code(404);
-
-            return [
+            header('Content-Type: application/json');
+            echo json_encode([
                 'success' => false,
-                'message' => 'Archivo no encontrado'
-            ];
+                'message' => 'Archivo de backup no encontrado en el servidor'
+            ]);
+            exit;
         }
 
-        return [
-            'success' => true,
-            'file' => $file,
-            'download' => true
-        ];
+        if (ob_get_level()) ob_end_clean();
+
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/gzip'); 
+        header('Content-Disposition: attachment; filename="' . basename($file) . '"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($file));
+        
+        readfile($file);
+        exit; 
     }
 
     public function setBackup(): array

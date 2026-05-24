@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlus, faPen, faTrash, faFilter, faLocationDot } from "@fortawesome/free-solid-svg-icons"
+import { faPlus, faPen, faTrash, faFilter, faLocationDot, faSearch, faXmark, faCalendarAlt } from "@fortawesome/free-solid-svg-icons"
 import { apiGetShowtimes, apiDeleteShowtime } from "../../api/showtimes"
 import { apiGetActiveMovies } from "../../api/movies"
 import { SwalCustom, showToast } from "../../utils/modal"
@@ -16,6 +16,8 @@ export default function Showtimes() {
     const [movies, setMovies] = useState([])
     const [loading, setLoading] = useState(true)
     const [filter, setFilter] = useState('all')
+    const [searchTerm, setSearchTerm] = useState('')
+    const [searchDate, setSearchDate] = useState('')
 
     const [isPanelOpen, setIsPanelOpen] = useState(false)
     const [selectedShowtime, setSelectedShowtime] = useState(null)
@@ -69,7 +71,27 @@ export default function Showtimes() {
         })
     }
 
-    const filteredShowtimes = filter === 'active' ? showtimes.filter(st => st.is_active) : showtimes
+    const filteredShowtimes = showtimes.filter(st => {
+        // 1. Filtro por estado (Activas / Todas)
+        const matchesStatus = filter === 'active' ? st.is_active : true
+
+        // 2. Filtro por texto (Película o Sala)
+        const searchLower = searchTerm.toLowerCase()
+        const matchesSearch =
+            st.title?.toLowerCase().includes(searchLower) ||
+            String(st.room).toLowerCase().includes(searchLower)
+
+        // 3. Filtro por fecha estricta (Ignorando la hora)
+        let matchesDate = true
+        if (searchDate) {
+            const d = new Date(st.start_time)
+            // Formateamos la fecha del item a YYYY-MM-DD para compararlo con el input type="date"
+            const localDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+            matchesDate = localDate === searchDate
+        }
+
+        return matchesStatus && matchesSearch && matchesDate
+    })
 
     const columns = useMemo(() => [
         {
@@ -186,21 +208,68 @@ export default function Showtimes() {
                 </div>
 
                 <div className="flex flex-col flex-1 min-h-0 bg-white/2 border border-white/5 rounded-3xl backdrop-blur-md shadow-2xl">
-                    <div className="p-6 border-b border-white/5 flex items-center justify-between bg-white/1 rounded-t-3xl shrink-0">
-                        <div className="flex items-center gap-2 text-gray-400">
-                            <FontAwesomeIcon icon={faFilter} className="text-xs" />
-                            <span className="text-xs font-bold uppercase tracking-widest">Filtrar por:</span>
+                    <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 p-6 border-b border-white/5 bg-white/1 rounded-t-3xl shrink-0">
+                        <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
+                            <div className="relative w-full sm:w-64">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+                                    <FontAwesomeIcon icon={faSearch} className="text-xs" />
+                                </div>
+                                <input
+                                    type="text"
+                                    placeholder="Buscar por película o sala..."
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    className="w-full bg-black/40 border border-white/5 hover:border-white/10 rounded-xl py-2.5 pl-9 pr-10 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/50 transition-all shadow-inner"
+                                />
+                                {searchTerm && (
+                                    <button
+                                        onClick={() => setSearchTerm('')}
+                                        title="Limpiar búsqueda"
+                                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-white transition-colors cursor-pointer"
+                                    >
+                                        <FontAwesomeIcon icon={faXmark} className="text-xs" />
+                                    </button>
+                                )}
+                            </div>
+
+                            <div className="relative w-full sm:w-auto">
+                                <input
+                                    type="date"
+                                    value={searchDate}
+                                    onChange={(e) => setSearchDate(e.target.value)}
+                                    className="w-full sm:w-auto bg-black/40 border border-white/5 hover:border-white/10 rounded-xl py-2.5 px-3 pr-9 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/50 transition-all shadow-inner scheme-dark cursor-pointer"
+                                    title="Filtrar por fecha"
+                                />
+                                {searchDate && (
+                                    <button
+                                        onClick={() => setSearchDate('')}
+                                        title="Limpiar fecha"
+                                        className="absolute inset-y-0 right-0 pr-2 flex items-center text-gray-500 hover:text-white transition-colors cursor-pointer"
+                                    >
+                                        <FontAwesomeIcon icon={faXmark} className="text-xs" />
+                                    </button>
+                                )}
+                            </div>
+
                         </div>
-                        <div className="flex bg-black/40 p-1 rounded-lg border border-white/5">
-                            {['all', 'active'].map((f) => (
-                                <button
-                                    key={f}
-                                    onClick={() => setFilter(f)}
-                                    className={`cursor-pointer px-4 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest transition-all ${filter === f ? 'bg-violet-600 text-white' : 'text-gray-500 hover:text-gray-300'}`}
-                                >
-                                    {f === 'all' ? 'Todas' : 'Activas'}
-                                </button>
-                            ))}
+
+                        {/* Filtros Activos/Todos */}
+                        <div className="flex items-center gap-3 w-full lg:w-auto justify-end">
+                            <div className="flex items-center gap-2 text-gray-400">
+                                <FontAwesomeIcon icon={faFilter} className="text-[10px]" />
+                                <span className="text-[10px] font-bold uppercase tracking-widest">Filtrar:</span>
+                            </div>
+                            <div className="flex bg-black/40 p-1 rounded-lg border border-white/5">
+                                {['all', 'active'].map((f) => (
+                                    <button
+                                        key={f}
+                                        onClick={() => setFilter(f)}
+                                        className={`cursor-pointer px-4 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest transition-all ${filter === f ? 'bg-violet-600 text-white shadow-md shadow-violet-900/20' : 'text-gray-500 hover:text-gray-300'}`}
+                                    >
+                                        {f === 'all' ? 'Todas' : 'Activas'}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
                     </div>
 

@@ -7,7 +7,8 @@ import {
     faUserShield,
     faUserTie,
     faUser,
-    faPeopleArrows
+    faPeopleArrows,
+    faXmark
 } from "@fortawesome/free-solid-svg-icons"
 
 import {
@@ -198,18 +199,29 @@ export default function Users() {
                 <div className="flex flex-col flex-1 min-h-0 bg-white/2 border border-white/5 rounded-3xl backdrop-blur-md shadow-2xl">
                     <div className="p-6 border-b border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white/1 rounded-t-3xl shrink-0">
                         <div className="flex items-center gap-2 text-gray-400">
-                            <FontAwesomeIcon icon={faSearch} className="text-xs" />
                             <span className="text-xs font-bold uppercase tracking-widest">Buscar usuario:</span>
                         </div>
                         <div className="relative w-full sm:w-80">
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+                                <FontAwesomeIcon icon={faSearch} className="text-xs" />
+                            </div>
                             <input
                                 type="text"
                                 autoComplete='off'
                                 placeholder="Buscar"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full bg-black/40 border border-white/10 rounded-lg py-2 px-4 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/50 transition-all"
+                                className="w-full bg-black/40 border border-white/5 hover:border-white/10 rounded-xl py-2.5 pl-9 pr-10 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/50 transition-all shadow-inner"
                             />
+                            {searchQuery && (
+                                <button
+                                    onClick={() => setSearchQuery('')}
+                                    title="Limpiar búsqueda"
+                                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-white transition-colors cursor-pointer"
+                                >
+                                    <FontAwesomeIcon icon={faXmark} className="text-xs" />
+                                </button>
+                            )}
                         </div>
                     </div>
 

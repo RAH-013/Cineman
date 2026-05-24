@@ -9,6 +9,9 @@ export default defineConfig({
     port: 5173,
     proxy: {
       "/api": "http://backend:80"
+    },
+    watch: {
+      usePolling: true
     }
   },
   plugins: [react(), tailwindcss()],

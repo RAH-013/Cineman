@@ -16,8 +16,6 @@ ufw default allow outgoing
 
 ufw limit 80/tcp comment 'Cineman HTTP con Rate Limit'
 
-ufw allow 443/tcp comment 'Cineman HTTPS (SSL)'
-
 ufw limit 22/tcp comment 'SSH por defecto con Rate Limit'
 
 ufw --force enable

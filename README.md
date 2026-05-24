@@ -51,6 +51,16 @@ Para correr esta API, se requiere definir las siguientes variables de entorno:
 
 `JWT_SECRET`
 
+## Probar el Watchdog
+
+Existen tres niveles de estado: Bajo, Medio, Alto. Segun el peligro de cada error se clasifica.
+
+Para conseguir un error bajo se puede detener nginx mediante este comando: sudo docker stop cineman_nginx
+
+Para conseguir uno medio, se puede detener la base de datos con: sudo docker stop cineman_mysql
+
+Para conseguir uno alto (error que el script no puede manejar solo), podemos cambiar el nombre del index.html del frontend en tiempo de ejecución.
+
 ## Autores
 - [@DIEGO2907](https://www.github.com/Diego2907)
 - [@FER-10K](https://github.com/Fer10K)

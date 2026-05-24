@@ -10,7 +10,7 @@ services:
       - "80:5173"
 
     volumes:
-      - ./frontend:/app
+      - ./frontend:/app:ro
       - /app/node_modules
 
     environment:
@@ -71,6 +71,9 @@ services:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
+
+    ports:
+      - "3306:3306"
 
     volumes:
       - mysql_data:/var/lib/mysql
