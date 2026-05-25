@@ -7,7 +7,7 @@ export function PrivateRoute({ children }) {
     const { user, loading } = useUser();
 
     if (loading) return <Loader />;
-    if (!user) return <Navigate to="/auth" replace />;
+    if (!user) return <Navigate to="/auth?alert=true" replace />;
 
     return children ?? <Outlet />;
 }
