@@ -1,68 +1,138 @@
-# Proyecto CINEMAN
+# Cineman - Sistema de Gestión Cinematográfica
 
-Dicho proyecto consiste en un sitio web simulando un cine real. En él, el usuario podrá ver un catálogo de películas y seleccionar la de su preferencia; es importante aclarar que solo podrá comprar boletos si está registrado en el sistema. 
+**Cineman** es una plataforma integral para la gestión de un cine, diseñada bajo una arquitectura moderna, escalable y completamente containerizada. Permite a los usuarios explorar una cartelera de películas, seleccionar funciones y adquirir boletos de forma interactiva, mientras ofrece herramientas administrativas robustas para la gestión de contenidos y el monitoreo del sistema.
 
-Todo este sistema está construido sobre una evolución moderna y escalable del clásico stack **LAMP** (Linux, Apache, MySQL, PHP), utilizando una arquitectura orientada a servicios y completamente containerizada con **Docker**.
-
----
-
-## Arquitectura y Tecnologías
-
-El proyecto se compone de múltiples contenedores orquestados para trabajar en conjunto:
-
-* **Frontend (Cliente):** Interfaz de usuario dinámica (SPA) y de carga rápida construida con **React y Vite**.
-* **Backend (API REST):** Desarrollado en **PHP** y servido a través de **Apache**. Actúa como el núcleo de la lógica de negocio, procesando las solicitudes de manera segura.
-* **Base de Datos:** Un contenedor dedicado de **MySQL** que almacena de forma relacional toda la información (usuarios, películas, funciones, asientos y transacciones).
-* **Gateway / Seguridad:** Implementación de **Nginx** como proxy inverso frente a la API, encargado de aplicar políticas de **Rate Limiting** para prevenir abusos en los endpoints y ataques DDoS.
+Este proyecto evoluciona el clásico stack **LAMP** (Linux, Apache, MySQL, PHP) hacia un entorno de microservicios orquestados con **Docker**, garantizando consistencia entre entornos de desarrollo y producción.
 
 ---
 
-## Características y Roles del Sistema
+## Tecnologías Utilizadas
 
-El sistema cuenta con un control de acceso basado en roles (RBAC) para dividir las funcionalidades:
-
-### 🍿 Para Usuarios (Clientes)
-* **Catálogo de Películas:** Exploración de la cartelera actual con detalles de cada cinta.
-* **Sistema de Autenticación:** Registro e inicio de sesión obligatorios para realizar transacciones.
-* **Compra de Boletos:** Flujo completo para adquirir entradas para funciones específicas.
-* **Selección de Asientos:** Interfaz visual interactiva para elegir los asientos disponibles en la sala.
-* **Mis Boletos:** Panel personal para visualizar el historial de compras y los boletos adquiridos.
-
-### 🎬 Para Managers (Gerentes)
-* **Gestión de Películas (CRUD):** Control total sobre el catálogo de películas (agregar, editar, visualizar y eliminar títulos).
-* **Gestión de Funciones (CRUD):** Programación de horarios, asignación de salas y administración de las funciones disponibles en cartelera. 
-
-### 🛠️ Para Administradores (IT / SysAdmin)
-* *Incluye todos los permisos del rol Manager, además de:*
-* **Ejecución de Scripts del Sistema:** Capacidad para disparar tareas críticas desde el panel, como copias de seguridad (backups) de la base de datos y scripts para el ingreso de usuarios.
-* **Monitorización:** Acceso a un visor de logs del sistema para auditar errores, revisar el tráfico y monitorear la salud de la aplicación.
+| Componente          | Tecnología       | Descripción                                               |
+| :------------------ | :--------------- | :-------------------------------------------------------- |
+| **Frontend**        | React + Vite     | SPA moderna con carga optimizada y componentes reactivos. |
+| **Backend**         | PHP (PSR-4)      | API RESTful modular y escalable.                          |
+| **Base de Datos**   | MySQL 8.4        | Almacenamiento relacional persistente.                    |
+| **Proxy / Gateway** | Nginx            | Proxy inverso con políticas de Rate Limiting y seguridad. |
+| **Infraestructura** | Docker & Compose | Orquestación completa de servicios.                       |
+| **Seguridad**       | JWT              | Autenticación basada en JSON Web Tokens.                  |
+| **Automatización**  | Bash Scripts     | Scripts para despliegue, firewall y watchdog.             |
 
 ---
 
-## Variables de Entorno
+## Estructura del Proyecto
 
-Para correr esta API, se requiere definir las siguientes variables de entorno:
+```text
+Cineman/
+├── backend/                # Lógica de negocio (PHP)
+│   ├── src/                # Código fuente (Controllers, Models, Routes, Utils)
+│   ├── public/             # Punto de entrada de la API e index.php
+│   └── scripts/            # Utilidades de DB (Backup, Restore, Seeders)
+├── frontend/               # Interfaz de usuario (React + Vite)
+│   ├── src/                # Componentes, Hooks, Contextos, Pages y Utils
+│   └── public/             # Activos estáticos y patrones de diseño
+├── docs/                   # Documentación técnica (Con estructura lista para Vitepress)
+│   ├── index.md            # Home de la documentación
+│   ├── guia-entorno.md     # Guía de despliegue
+│   ├── manual-usuario.md   # Manual visual para el usuario
+│   └── ...                 # Documentación de API y Scripts
+├── docker/                 # Configuraciones de contenedores (Nginx, Apache, MySQL)
+│   ├── mysql/init/         # Scripts SQL de inicialización de la base de datos
+│   └── ...                 # Dockerfiles y archivos de configuración
+├── scripts/                # Scripts de automatización global
+│   ├── Iniciar.sh          # Despliegue completo y configuración inicial
+│   ├── Detener.sh          # Apagado, limpieza y restauración de firewall
+│   ├── Watchdog.sh         # Monitoreo de salud y autocuración
+│   ├── Firewall.sh         # Configuración de reglas UFW y Rate Limit
+│   ├── Notificador.sh      # Motor de envío de alertas por correo
+│   └── template/           # Plantillas HTML y assets para correos
+└── docker-compose.yml      # Orquestación de servicios containerizados
+```
 
-`DB_HOST`
-`DB_ROOT_PASSWORD`
-`DB_DATABASE`
-`DB_USER`
-`DB_PASSWORD`
+---
 
-`JWT_SECRET`
+## Requisitos Previos
 
-## Probar el Watchdog
+Antes de comenzar, asegúrate de tener instaladas las siguientes herramientas:
 
-Existen tres niveles de estado: Bajo, Medio, Alto. Segun el peligro de cada error se clasifica.
+- **Docker Desktop** (o Docker Engine en Linux) v20.10+
+- **Docker Compose** v2.0+
+- **Git**
+- **Navegador Web** (Chrome, Firefox, Edge)
 
-Para conseguir un error bajo se puede detener nginx mediante este comando: sudo docker stop cineman_nginx
+> **Nota para usuarios de Linux:** Asegúrate de tener permisos de ejecución para los archivos `.sh` en la carpeta `scripts/`.
 
-Para conseguir uno medio, se puede detener la base de datos con: sudo docker stop cineman_mysql
+---
 
-Para conseguir uno alto (error que el script no puede manejar solo), podemos cambiar el nombre del index.html del frontend en tiempo de ejecución.
+## Instalación y Configuración
+
+Sigue estos pasos para levantar el proyecto en tu máquina local:
+
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/tu-usuario/cineman.git
+cd cineman
+```
+
+### 2. Configurar variables de entorno
+
+Crea un archivo `.env` en la raíz del proyecto basándote en los requerimientos del `docker-compose.yml`:
+
+```env
+# Database Configuration
+DB_ROOT_PASSWORD=root_password
+DB_DATABASE=cineman_db
+DB_USER=cineman_user
+DB_PASSWORD=cineman_password
+
+# Security
+JWT_SECRET=tu_secreto_super_seguro_aqui
+```
+
+### 3. Levantar el entorno
+
+Utiliza el script automatizado para construir las imágenes, configurar el firewall y levantar los contenedores:
+
+```bash
+chmod +x scripts/*.sh
+./scripts/Iniciar.sh
+```
+
+El script se encargará de:
+
+1. Configurar las reglas del firewall.
+2. Construir y levantar los contenedores en segundo plano.
+3. Iniciar el **Watchdog** para monitoreo.
+
+---
+
+## Scripts de Mantenimiento
+
+El proyecto incluye una suite de scripts en la carpeta `scripts/` para facilitar la administración:
+
+- **`./scripts/Iniciar.sh`**: Despliegue completo con validación de estado.
+- **`./scripts/Detener.sh`**: Detiene contenedores. Opciones:
+  - `-a` o `--all`: Limpieza total (incluye base de datos y logs).
+- **`./scripts/Watchdog.sh`**: Monitoriza la salud de los servicios y recupera contenedores caídos automáticamente.
+
+---
+
+## Roles y Permisos
+
+- **Usuario:** Consulta cartelera y compra boletos (requiere login).
+- **Manager:** Gestión de películas y programación de funciones.
+- **Admin:** Control total + ejecución de backups y auditoría de logs.
+
+---
 
 ## Autores
-- [@DIEGO2907](https://www.github.com/Diego2907)
-- [@FER-10K](https://github.com/Fer10K)
-- [@RAH-013](https://www.github.com/RAH-013)
-- [@ROM-332](https://github.com/Rom322)
+
+- **DIEGO2907** - [Perfil de GitHub](https://www.github.com/Diego2907)
+- **FER-10K** - [Perfil de GitHub](https://github.com/Fer10K)
+- **RAH-013** - [Perfil de GitHub](https://www.github.com/RAH-013)
+- **ROM-332** - [Perfil de GitHub](https://github.com/Rom322)
+
+---
+
+Hecho con ❤️.
