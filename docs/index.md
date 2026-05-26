@@ -37,7 +37,7 @@ features:
     link: /manual-usuario
 ---
 
-## ⚡ Quick Start
+## Quick Start
 
 Levanta el ecosistema completo en un solo comando (requiere Linux + Docker):
 
@@ -49,26 +49,26 @@ sudo ./scripts/Iniciar.sh
 
 ---
 
-## 🏛️ Pilares del Proyecto
+## Pilares del Proyecto
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
   <div style="padding: 1.5rem; border: 1px solid var(--vp-c-bg-soft); border-radius: 8px; background: var(--vp-c-bg-soft);">
-    <h3>🛡️ Seguridad</h3>
+    <h3 style="font-weight: bold; font-size: 20px;"> Seguridad </h3>
     <p>Protección UFW, Rate Limiting en Nginx y validación estricta de JWT en cada petición.</p>
   </div>
   <div style="padding: 1.5rem; border: 1px solid var(--vp-c-bg-soft); border-radius: 8px; background: var(--vp-c-bg-soft);">
-    <h3>🐕 Resiliencia</h3>
+    <h3 style="font-weight: bold; font-size: 20px;"> Resiliencia </h3>
     <p>Watchdog activo que monitorea sockets y procesos, recuperando el sistema ante fallos críticos.</p>
   </div>
   <div style="padding: 1.5rem; border: 1px solid var(--vp-c-bg-soft); border-radius: 8px; background: var(--vp-c-bg-soft);">
-    <h3>📊 Auditoría</h3>
+    <h3 style="font-weight: bold; font-size: 20px;"> Auditoría </h3>
     <p>Sistema de logs forenses y notificaciones automáticas vía email para incidentes de infraestructura.</p>
   </div>
 </div>
 
 ---
 
-## 📂 Documentación Completa
+## Documentación Completa
 
 - [**Guía de Entorno**](/guia-entorno): Requisitos y despliegue.
 - [**Scripts & Automatización**](/scripts): El corazón DevOps del proyecto.

@@ -38,4 +38,5 @@ Para facilitar la vida del administrador, hemos centralizado las operaciones en 
 | `Watchdog.sh` | Proceso en segundo plano que vigila la salud de los contenedores.    | Automático mediante `Iniciar.sh` |
 | `Firewall.sh` | Configura políticas de UFW para proteger los puertos del sistema.    | Interno                          |
 
-> **Tip de Seguridad:** Siempre revisa los logs del Watchdog en `/logs/watchdog_sys.log` para auditar intentos de recuperación automática.
+> [!TIP]
+> Siempre revisa los logs del Watchdog en `/logs/watchdog_sys.log` para auditar intentos de recuperación > > automática.
