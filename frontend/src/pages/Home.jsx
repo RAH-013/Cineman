@@ -380,7 +380,7 @@ function Home() {
                     </div>
 
                     {totalPages > 1 && (
-                        <div className="flex items-center justify-end space-x-4 mt-8">
+                        <div className="flex items-center justify-start space-x-4 mt-8">
                             <button
                                 onClick={handlePrevPage}
                                 disabled={listPage === 0}

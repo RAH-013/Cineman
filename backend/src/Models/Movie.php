@@ -54,6 +54,110 @@ class Movie
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function findOneByTitle(string $message): ?array
+    {
+        $message = mb_strtolower(trim($message));
+
+        $sql = "
+            SELECT *
+            FROM movies
+            WHERE is_active = 1
+            AND LOWER(title) LIKE :title
+            LIMIT 1
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':title' => "%{$message}%"
+        ]);
+
+        $movie = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $movie ?: null;
+    }
+
+    public function getRandomByGenre(string $genre): ?array
+    {
+        $sql = "
+            SELECT *
+            FROM movies
+            WHERE is_active = 1
+            AND genres LIKE :genre
+            ORDER BY RAND()
+            LIMIT 1
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':genre' => "%{$genre}%"
+        ]);
+
+        $movie = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $movie ?: null;
+    }
+
+    public function getRandomRecommendation(): ?array
+    {
+        $sql = "
+            SELECT *
+            FROM movies
+            WHERE is_active = 1
+            ORDER BY RAND()
+            LIMIT 1
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute();
+
+        $movie = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $movie ?: null;
+    }
+
+    public function searchActiveMovies(array $filters): array
+    {
+        $sql = "SELECT DISTINCT m.* FROM movies m";
+        
+        $conditions = ["m.is_active = 1"];
+        $params = [];
+
+        if (!empty($filters['language']) || !empty($filters['format']) || !empty($filters['time_condition'])) {
+            $sql .= " INNER JOIN showtimes s ON m.id = s.movie_id";
+            $conditions[] = "s.is_active = 1";
+            
+            if (!empty($filters['language'])) {
+                $conditions[] = "s.language = ?";
+                $params[] = $filters['language'];
+            }
+            
+            if (!empty($filters['format'])) {
+                $conditions[] = "s.format = ?";
+                $params[] = $filters['format'];
+            }
+        }
+
+        if (!empty($filters['genre'])) {
+            $conditions[] = "FIND_IN_SET(?, m.genres) > 0";
+            $params[] = $filters['genre'];
+        }
+
+        if (!empty($filters['classification'])) {
+            $conditions[] = "m.classification = ?";
+            $params[] = $filters['classification'];
+        }
+
+        $sql .= " WHERE " . implode(" AND ", $conditions);
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC) ?: [];
+    }
+
     public function create(
         string $id, string $title, string $director, string $synopsis,
         string $posterUrl, string $trailerUrl, int $durationMinutes,

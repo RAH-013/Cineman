@@ -42,6 +42,14 @@ if (str_starts_with($uri, $apiPrefix . '/system')) {
     return require __DIR__ . '/System.php';
 }
 
+/*
+    Chat
+*/
+if (str_starts_with($uri, $apiPrefix . '/chat')) {
+    $route = str_replace($apiPrefix . '/chat', '', $uri);
+    return require __DIR__ . '/Chat.php';
+}
+
 http_response_code(404);
 return [
     'success' => false,

@@ -41,46 +41,45 @@ class Log
         ];
     }
 
-    private function writeLog(array $request, mixed $response, ?\Throwable $exception = null): void
-    {
-        $endpoint = isset($request['endpoint']) ? trim($request['endpoint'], '/') : '';
+    private function writeLog(
+        array $request,
+        mixed $response,
+        ?\Throwable $exception = null,
+        ?array $currentUser = null
+    ): void {
+        try {
+            $statusCode = http_response_code();
 
-        if ($endpoint === 'api') {
-            return;
-        }
+            if ($statusCode === false || $statusCode === 200) {
+                $statusCode = is_array($response) && isset($response['status_code'])
+                    ? (int) $response['status_code']
+                    : 200;
+            }
 
-        $statusCode = http_response_code();
-        if ($statusCode === false || $statusCode === 200) {
-            $statusCode = is_array($response) && isset($response['status_code']) 
-                ? (int)$response['status_code'] 
-                : 200;
-        }
+            $this->system->createLog([
+                'request_id' => $request['request_id'],
+                'user_id'    => $currentUser['id'] ?? null,
+                'user_role'  => $currentUser['role'] ?? null,
+                'token_jti'  => $currentUser['jti'] ?? null,
 
-        $currentUser = Auth::user();
+                'action'     => $this->resolveAction($request),
+                'severity'   => $this->resolveSeverity($statusCode),
+                'ip_address' => $request['ip_address'],
+                'user_agent' => $request['user_agent'],
+                'endpoint'   => $request['endpoint'],
+                'method'     => $request['method'],
+                'status_code'=> $statusCode,
 
-        $message = $this->resolveMessage($statusCode);
-        if ($exception) {
-            $message .= ': ' . $exception->getMessage();
-        }
+                'message'    => $exception
+                    ? 'Error: ' . $exception->getMessage()
+                    : $this->resolveMessage($statusCode),
 
-        $this->system->createLog([
-            'request_id'  => $request['request_id'],
-            'token_jti'   => $currentUser['jti'] ?? null,
-            'user_id'     => $currentUser['id'] ?? null,
-            'user_role'   => $currentUser['role'] ?? null,
-            'action'      => $this->resolveAction($request),
-            'severity'    => $this->resolveSeverity($statusCode),
-            'ip_address'  => $request['ip_address'],
-            'user_agent'  => $request['user_agent'],
-            'endpoint'    => $request['endpoint'],
-            'method'      => $request['method'],
-            'status_code' => $statusCode,
-            'message'     => $message,
-            'context'     => [
-                'response_type' => gettype($response),
-                'exception' => $exception ? get_class($exception) : null
-            ]
-        ]);
+                'context' => [
+                    'response_type' => gettype($response),
+                    'exception'     => $exception ? get_class($exception) : null
+                ]
+            ]);
+        } catch (\Throwable $logError) {}
     }
 
     private function resolveAction(array $request): string

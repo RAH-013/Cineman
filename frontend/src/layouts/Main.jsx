@@ -3,6 +3,7 @@ import { Suspense } from "react";
 
 import Header from "../components/Header";
 import Loader from "./Loader";
+import AssistantButton from "./AssistantButton";
 
 export default function Main() {
     return (
@@ -13,6 +14,7 @@ export default function Main() {
                     <Outlet />
                 </Suspense>
             </main>
+            <AssistantButton />
         </>
     );
 }

@@ -72,20 +72,16 @@ export default function Showtimes() {
     }
 
     const filteredShowtimes = showtimes.filter(st => {
-        // 1. Filtro por estado (Activas / Todas)
         const matchesStatus = filter === 'active' ? st.is_active : true
 
-        // 2. Filtro por texto (Película o Sala)
         const searchLower = searchTerm.toLowerCase()
         const matchesSearch =
             st.title?.toLowerCase().includes(searchLower) ||
             String(st.room).toLowerCase().includes(searchLower)
 
-        // 3. Filtro por fecha estricta (Ignorando la hora)
         let matchesDate = true
         if (searchDate) {
             const d = new Date(st.start_time)
-            // Formateamos la fecha del item a YYYY-MM-DD para compararlo con el input type="date"
             const localDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
             matchesDate = localDate === searchDate
         }
