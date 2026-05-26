@@ -1,4 +1,4 @@
-# 🎨 Interfaz Frontend
+﻿# 🎨 Interfaz Frontend
 
 Detalles técnicos sobre la construcción y arquitectura del cliente web.
 
@@ -11,9 +11,10 @@ Detalles técnicos sobre la construcción y arquitectura del cliente web.
 
 ## 📁 Estructura de Código
 
-- **`/src/components`**: Componentes reutilizables (Botones, Inputs, Cards).
+- **`/src/components`**: Componentes reutilizables (Botones, Inputs, Cards, Chat).
 - **`/src/pages`**: Vistas principales de la aplicación (Home, Movie, Profile).
-- **`/src/hooks`**: Lógica extraída para facilitar el consumo de la API (`useTickets`, `useUser`).
+- **`/src/hooks`**: Lógica extraída para facilitar el consumo de la API (`useTickets`, `useUser`, `useChat`).
+- **`/src/layouts`**: Estructuras de página y elementos persistentes como el `AssistantButton`.
 - **`/src/api`**: Configuración de **Axios** y servicios para cada endpoint del backend.
 - **`/src/utils`**: Funciones de ayuda para formateo de fechas, precios y validaciones.
 

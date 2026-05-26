@@ -1,4 +1,4 @@
----
+﻿---
 layout: home
 
 hero:
@@ -32,6 +32,9 @@ features:
   - title: Interfaz Inmersiva
     details: SPA construida con React y Vite, enfocada en la experiencia de usuario y rendimiento.
     link: /interfaz-frontend
+  - title: Asistente con IA
+    details: Chat interactivo para recomendaciones de películas y consulta de horarios en tiempo real.
+    link: /manual-usuario
 ---
 
 ## ⚡ Quick Start

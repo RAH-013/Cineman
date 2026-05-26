@@ -1,4 +1,4 @@
-# API Backend
+﻿# API Backend
 
 El corazón de Cineman es una API RESTful desarrollada en **PHP** siguiendo los estándares PSR y una arquitectura modular.
 
@@ -7,7 +7,7 @@ El corazón de Cineman es una API RESTful desarrollada en **PHP** siguiendo los 
 - **`src/Controllers/`**: Manejo de la lógica de entrada y respuesta.
 - **`src/Models/`**: Interacción directa con la base de datos MySQL vía PDO.
 - **`src/Routes/`**: Definición de endpoints y segmentación de rutas.
-- **`src/Middleware/`**: Capas de autenticación JWT y registro de logs.
+- **`src/Middleware/`**: Capas de autenticación JWT y registro de logs forenses.
 
 ## Configuración (.env)
 
@@ -25,6 +25,7 @@ El backend requiere las siguientes variables de entorno para operar:
 | `/api/tickets/buy`   | POST     | Procesamiento de compra de boletos.      | Usuario |
 | `/api/showtimes`     | POST/PUT | Gestión de horarios y salas.             | Manager |
 | `/api/system/backup` | POST     | Dispara una copia de seguridad de la DB. | Admin   |
+| `/api/chat/message`  | POST     | Interacción con el asistente virtual.    | Público |
 
 ### Flujo de Datos
 

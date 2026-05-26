@@ -1,6 +1,16 @@
-# Manual de Usuario
+﻿# Manual de Usuario
 
 Bienvenido a la guía visual de **Cineman**. Aquí aprenderás a interactuar con la plataforma desde la perspectiva de un cliente, gerente o administrador.
+
+---
+
+## Asistente Virtual (Cineman Chat)
+
+Cineman incluye un asistente inteligente para mejorar tu experiencia:
+
+- **Acceso**: Haz clic en el botón flotante en la esquina inferior derecha.
+- **Consultas**: Puedes preguntar por películas, horarios, géneros o incluso pedir recomendaciones basadas en tu estado de ánimo.
+- **Acciones Rápidas**: El chat permite comprar boletos o ver detalles de películas directamente desde la conversación.
 
 ---
 

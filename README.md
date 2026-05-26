@@ -60,6 +60,7 @@ Antes de comenzar, asegúrate de tener instaladas las siguientes herramientas:
 - **Git**
 - **Navegador Web** (Chrome, Firefox, Edge)
 
+> [!IMPORTANT]
 > **Nota para usuarios de Linux:** Asegúrate de tener permisos de ejecución para los archivos `.sh` en la carpeta `scripts/`.
 
 ---
