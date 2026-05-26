@@ -17,6 +17,16 @@ if ($route === '/last-backup' && $method === 'GET') {
 }
 
 /*
+    GET SERVER HTOP
+    GET /api/system/server-htop
+*/
+if ($route === '/server-htop' && $method === 'GET') {
+    AuthMiddleware::requireRole(['admin']);
+
+    return $controller->getServerHtop();
+}
+
+/*
     CREATE NEW BACKUP
     GET /api/system/new-backup
 */

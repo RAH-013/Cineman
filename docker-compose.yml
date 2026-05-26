@@ -10,7 +10,7 @@ services:
       - "80:5173"
 
     volumes:
-      - ./frontend:/app:ro
+      - ./frontend:/app
       - /app/node_modules
 
     environment:

@@ -79,6 +79,33 @@ class System
         ];
     }
 
+    public function getServerHtop()
+    {
+        $result = $this->model->getServerHtop();
+
+        if (!$result['success']) {
+            http_response_code(500);
+            header('Content-Type: application/json');
+
+            echo json_encode([
+                'success' => false,
+                'message' => $result['message'] ?? 'Error ejecutando monitoreo',
+                'error' => $result['error'] ?? null
+            ]);
+
+            exit;
+        }
+
+        header('Content-Type: application/json');
+
+        echo json_encode([
+            'success' => true,
+            'output' => $result['output']
+        ]);
+
+        exit;
+    }
+
     public function setUsers(): array
     {
         $result = $this->model->setUsersSeed();

@@ -86,6 +86,48 @@ class System
         ];
     }
 
+    public function getServerHtop(): array
+    {
+        $script = __DIR__ . '/../../scripts/server_htop.sh';
+
+        $process = proc_open(
+            "bash " . escapeshellarg($script),
+            [
+                1 => ['pipe', 'w'],
+                2 => ['pipe', 'w']
+            ],
+            $pipes
+        );
+
+        if (!is_resource($process)) {
+            return [
+                'success' => false,
+                'message' => 'No se pudo ejecutar el script'
+            ];
+        }
+
+        $output = stream_get_contents($pipes[1]);
+        $error  = stream_get_contents($pipes[2]);
+
+        fclose($pipes[1]);
+        fclose($pipes[2]);
+
+        $code = proc_close($process);
+
+        if ($code !== 0) {
+            return [
+                'success' => false,
+                'message' => 'Error ejecutando server_htop.sh',
+                'error' => trim($error)
+            ];
+        }
+
+        return [
+            'success' => true,
+            'output' => trim($output)
+        ];
+    }
+
     public function setBackup(): array
     {
         $script = __DIR__ . '/../../scripts/db_restore.sh';

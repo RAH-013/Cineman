@@ -44,6 +44,20 @@ const downloadFile = async (response) => {
     window.URL.revokeObjectURL(url);
 };
 
+export const apiGetServerHtop = async () => {
+    try {
+        const { data } = await apiAxios.get("/system/server-htop");
+        return data;
+    } catch (error) {
+        console.error(
+            "Error al obtener el monitoreo del servidor:",
+            error
+        );
+
+        throw error.response?.data || error;
+    }
+};
+
 export const apiGetLastBackup = async () => {
     try {
         const response = await apiAxios.get(

@@ -16,7 +16,8 @@ import {
     apiGetNewBackup,
     apiSetBackup,
     apiUsersSeeds,
-    apiGetLogs
+    apiGetLogs,
+    apiGetServerHtop
 } from '../../api/system'
 import Loader from "../../layouts/Loader"
 
@@ -231,6 +232,26 @@ export default function System() {
                             <div className="min-w-0 flex-1">
                                 <h3 className="font-black text-sm uppercase tracking-wide text-violet-300 group-hover:text-white mb-0.5">Monitorear Logs</h3>
                                 <p className="text-xs text-gray-400 truncate">Inspecciona y lee la trazabilidad completa del servidor.</p>
+                            </div>
+                        </button>
+
+                        <button
+                            onClick={() => handleAction('server_htop', apiGetServerHtop)}
+                            disabled={loading}
+                            className="group flex items-center gap-4 p-5 bg-white/2 hover:bg-cyan-500/10 border border-white/5 hover:border-cyan-500/30 rounded-2xl text-left transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none cursor-pointer"
+                        >
+                            <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-cyan-400 transition-colors">
+                                <FontAwesomeIcon icon={faTerminal} className="text-lg" />
+                            </div>
+
+                            <div className="min-w-0 flex-1">
+                                <h3 className="font-black text-sm uppercase tracking-wide text-gray-200 group-hover:text-white mb-0.5">
+                                    Server HTOP
+                                </h3>
+
+                                <p className="text-xs text-gray-500 truncate">
+                                    Monitorea CPU, RAM, disco y procesos activos del servidor.
+                                </p>
                             </div>
                         </button>
 
